@@ -1,4 +1,4 @@
-name: 'Tagger action'
+name: 'Tagger Action'
 description: 'Una acción compuesta que taggea una imagen'
 inputs:
   user_name:
@@ -19,9 +19,9 @@ runs:
     - id: version_extractor
       name: Extraer información sobre la versión del archivo JSON
       run: |
+        image_name="${{ inputs.user_name }}/sample-angular-app:${{ inputs.version }}"
         
-        image_name="${{ inputs.user_name }}/sample-angular-app:${{ inputs.version }}
-        echo "Esta es la VERSION desde el action ${{ inputs.version }}"
+        echo "Esta es la imagen desde el action: ${image_name}"
+        
         echo "image_name=${image_name}" >> $GITHUB_OUTPUT
       shell: bash
-          
