@@ -5,21 +5,25 @@ inputs:
     description: 'Nombre del usuario'
     required: true
     default: 'default'
-  version:
+  app_version:
     description: 'Versión de la aplicación'
+    required: true
+    default: 'default'
+  app_name:
+    description: 'Nombre de la aplicación'
     required: true
     default: 'default'
 outputs:
   image_name:
     description: 'Nombre de la imagen completa'
-    value: ${{ steps.version_extractor.outputs.image_name }}
+    value: ${{ steps.image_name_creator.outputs.image_name }}
 runs:
   using: "composite"
   steps:
-    - id: version_extractor
+    - id: image_name_creator
       name: Extraer información sobre la versión del archivo JSON
       run: |
-        image_name="${{ inputs.user_name }}/sample-angular-app:${{ inputs.version }}"
+        image_name="${{ inputs.user_name }}/${{ inputs.app_name }}:${{ inputs.app_version }}"
         
         echo "Esta es la imagen desde el action: ${image_name}"
         
