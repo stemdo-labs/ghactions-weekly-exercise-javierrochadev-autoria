@@ -48,5 +48,5 @@ jobs:
       - id: image_push
         name: Subir imagen a docker hub
         run: |
-          sudo docker push ${{ steps.name_creation.image_name }} 
+          sudo docker push ${{ steps.name_creation.outputs.image_name }} 
           
