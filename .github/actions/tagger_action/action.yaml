@@ -5,15 +5,18 @@ inputs:
     description: 'Nombre del usuario'
     required: true
     default: 'default'  
+outputs:
+  image_name:
+    description: 'Nombre de la imagen completa'
 runs:
   using: "composite"
   steps:
     - id: version_extractor
-      name: Extraer información sobre la version del archivo json
+      name: Extraer información sobre la versión del archivo JSON
       run: |
-         app_version=$(grep -o '"version": *"[^"]*"' package.json | sed 's/"version": "//;s/"//g')
-          image_name="${{ inputs.user_name }}/sample-angular-app:$app_version"
-          echo "image_name=$image_name" >> $GITHUB_OUTPUT
-          echo $image_name
+        app_version=$(grep -o '"version": *"[^"]*"' package.json | sed 's/"version": "//;s/"//g')
+        image_name="${{ inputs.user_name }}/sample-angular-app:$app_version"
+        
+        echo "image_name=${image_name}" >> $GITHUB_OUTPUT
       shell: bash
           
