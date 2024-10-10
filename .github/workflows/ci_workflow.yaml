@@ -32,9 +32,15 @@ jobs:
 
       # Llamar a la action que me crea el nombre de la imagen
       - name: Llamar a la action que me crea el nombre de la imagen
+        id: tagger
         uses: ./.github/actions/tagger_action
         with:
           user_name: $DOCKER_USER
+      # Mostrar el nombre de la imagen creada
+      - name: Mostrando el nombre de la imagen
+        run: |
+          echo "The output from the action is: ${{ steps.tagger.outputs.image_name }}"
+  
 
       # Subirla a Docker Hub usando las credenciales en los secrets
       - name: Hacer login en DockerHub
