@@ -1,7 +1,6 @@
 name: 'Tagger action'
 description: 'Una acción compuesta que taggea una imagen'
 runs:
-  environment: production
   using: "composite"
   steps:
     - id: version_extractor
