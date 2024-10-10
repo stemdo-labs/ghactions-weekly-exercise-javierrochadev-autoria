@@ -6,8 +6,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     environment: production
-    env: 
-      DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER}}
+   
     # Instalar docker
     steps:
       - name: Checkout code
