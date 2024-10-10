@@ -42,7 +42,7 @@ jobs:
       - id: image_creation
         name: Construir imagen
         run: |
-          sudo docker build -t ${{ steps.name_creation.image_name }} .
+          sudo docker build -t ${{ steps.name_creation.outputs.image_name }} .
           sudo docker images
 
       - id: image_push
