@@ -21,5 +21,6 @@ runs:
       run: |
         field_value=$(grep -o '"${{ inputs.field_name }}": *"[^"]*"' ${{ inputs.file_path }} | sed 's/"${{ inputs.field_name }}": "//;s/"//g')
         echo "field_value=${field_value}" >> $GITHUB_OUTPUT
+        echo "Este es el nombre de la app $field_value"
       shell: bash
 
