@@ -6,7 +6,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     environment: production
-   
+    env: 
+      DOCKER_USER: ${{ secrets.DOCKERHUB_USER }}
     # Instalar docker
     steps:
       - name: Checkout code
@@ -43,13 +44,13 @@ jobs:
       - id: image_creation
         name: Construir imagen
         run: |
-          sudo docker build -t "${{ secrets.DOCKERHUB_USER }}/sample-angular-app:0.0.0" .
+          sudo docker build -t $DOCKER_USER/sample-angular-app:0.0.0" .
           sudo docker images
 
       - id: image_push
         name: Subir imagen a docker hub
         run: |
-          sudo docker push "${{ secrets.DOCKERHUB_USER }}/sample-angular-app:0.0.0"
+          sudo docker push "$DOCKER_USER/sample-angular-app:0.0.0"
 
 
       
