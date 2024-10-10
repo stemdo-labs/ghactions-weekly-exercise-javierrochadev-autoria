@@ -44,13 +44,13 @@ jobs:
       - id: image_creation
         name: Construir imagen
         run: |
-          sudo docker build -t $DOCKER_USER/sample-angular-app:0.0.0 .
-          sudo docker images
+          docker build -t $DOCKER_USER/sample-angular-app:0.0.0 .
+          docker images
 
       - id: image_push
         name: Subir imagen a docker hub
         run: |
-          sudo docker push $DOCKER_USER/sample-angular-app:0.0.0
+          docker push $DOCKER_USER/sample-angular-app:0.0.0
 
 
       
