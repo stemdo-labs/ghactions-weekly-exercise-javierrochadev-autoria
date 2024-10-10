@@ -1,0 +1,25 @@
+name: 'Extractor Action'
+description: 'Una acción compuesta que extrae el valor de un campo de un fichero JSON'
+inputs:
+  field_name:
+    description: 'Campo a buscar'
+    required: true
+    default: 'default'
+  file_path:
+    description: 'Ubicación del fichero json'
+    required: true
+    default: 'default'
+outputs:
+  field_value:
+    description: 'Valor del campo a buscar en el fichero'
+    value: ${{ steps.extractor.outputs.field_value }}
+runs:
+  using: "composite"
+  steps:
+    - id: extractor
+      name: version_extractor
+        id: extraer_version
+        run: |
+          field_value=$(grep -o '"${{ inputs.field_name }}": *"[^"]*"' ${{ file_path }} | sed 's/"${{ inputs.field_name }}": "//;s/"//g')
+          echo "field_value=${field_value}" >> $GITHUB_OUTPUT
+

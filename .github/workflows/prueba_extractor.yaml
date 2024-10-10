@@ -1,0 +1,26 @@
+name: Creación y subida de la imagen de angular
+on:
+  workflow_dispatch:
+jobs:
+  
+  build:
+    runs-on: ubuntu-latest
+    environment: production
+    env: 
+      DOCKER_USER: ${{ secrets.DOCKERHUB_USER }}
+    steps:
+    
+      - name: Checkout code
+        uses: actions/checkout@v2
+          
+      - name: Llamar a la action que me crea el nombre de la imagen
+        id: extractor
+        uses: ./.github/actions/extractor
+        with:
+          field_name: version
+          file_path: ./package.json
+          
+      # Mostrar el nombre de la imagen creada
+      - name: Mostrando el nombre de la imagen
+        run: |
+          echo "The output from the action is: ${{ steps.tagger.outputs.field_value }}"
