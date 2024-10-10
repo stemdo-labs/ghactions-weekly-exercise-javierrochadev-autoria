@@ -34,19 +34,22 @@ jobs:
       #  uses: ./.github/actions/tagger_action
 
       # Subirla a Docker Hub usando las credenciales en los secrets
-      - name: Login docker hub
-        run: echo "${{ secrets.DOCKERHUB_PASS }}" | docker login -u jrochadev --password-stdin
+      - name: Hacer login en DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_PASS }}
 
       - id: image_creation
         name: Construir imagen
         run: |
-          sudo docker build -t jrochadev/sample-angular-app:0.0.0 .
+          sudo docker build -t "${{ secrets.DOCKERHUB_USER }}/sample-angular-app:0.0.0" .
           sudo docker images
 
       - id: image_push
         name: Subir imagen a docker hub
         run: |
-          sudo docker push jrochadev/sample-angular-app:0.0.0
+          sudo docker push "${{ secrets.DOCKERHUB_USER }}/sample-angular-app:0.0.0"
 
 
       
