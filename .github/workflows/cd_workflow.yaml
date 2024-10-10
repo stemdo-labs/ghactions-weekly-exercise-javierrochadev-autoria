@@ -1,4 +1,6 @@
-name: Despliegue de aplicaciñon de angular
+
+name: Despliegue de la aplicación
+
 on:
   workflow_dispatch:
 jobs:
@@ -15,7 +17,7 @@ jobs:
           docker pull $DOCKER_USER/sample-angular-app:0.0.0
       - name: upload container
         run: |
-          docker run -d -p 8087:80 --name github-weekly $DOCKER_USER/sample-angular-app-nginx:0.0.0
+          docker run -d -p 8087:80 --name github-weekly $DOCKER_USER/sample-angular-app:0.0.0
       - name: Verificación del funcionamiento de la app
         run: |
           curl http://localhost:8087
