@@ -10,26 +10,42 @@ jobs:
         uses: actions/checkout@v2
       
       # Paso para instalar Docker
-      # - name: install Docker
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install ca-certificates curl
-      #     sudo install -m 0755 -d /etc/apt/keyrings
-      #     sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-      #     sudo chmod a+r /etc/apt/keyrings/docker.asc
-      #     echo \
-      #     "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-      #     $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-      #     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-      #     sudo apt-get update
-      #     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-      #     sudo docker run hello-world
+      - name: install Docker
+         run: |
+           sudo apt-get update
+           sudo apt-get install ca-certificates curl
+           sudo install -m 0755 -d /etc/apt/keyrings
+           sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+           sudo chmod a+r /etc/apt/keyrings/docker.asc
+           echo \
+           "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+           $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+           sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+           sudo apt-get update
+           sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+           sudo docker run hello-world
 
       # Llamar a la action que me crea el nombre de la imagen
-      - name: Llamar a la action que me crea el nombre de la imagen
-        uses: ./.github/actions/tagger_action
+      #- name: Llamar a la action que me crea el nombre de la imagen
+      #  uses: ./.github/actions/tagger_action
 
       # Subirla a Docker Hub usando las credenciales en los secrets
-      # - name: Set up Docker for production
-      #   if: github.ref == 'refs/heads/main'
-      #   run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      - name: Login docker hub
+        run: echo "${{ secrets.DOCKERHUB_PASS }}" | docker login -u "${{ secrets.DOCKERHUB_USER }}" --password-stdin
+      - id: name_creation
+        name: Crear nombre de la imagen
+        run: |
+          image_name=javier/angular_app:0.0.0
+          echo "image_name=$image_name" >> $GITHUB_OUTPUT
+
+      - id: image_creation
+        name: Construir imagen
+        run: |
+          sudo docker build -t ${{ steps.name_creation.image_name }} 
+          sudo docker images
+
+      - id: image_push
+        name: Subir imagen a docker hub
+        run: |
+          sudo docker push ${{ steps.name_creation.image_name }} 
+          
