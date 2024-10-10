@@ -1,4 +1,4 @@
-name: Creación y subida de la imagen de angular
+name: Despliegue de aplicaciñon de angular
 on:
   workflow_dispatch:
 jobs:
