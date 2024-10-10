@@ -24,10 +24,12 @@ jobs:
           sudo docker run hello-world
 
 # crear imagen de docker con el fichero docker file etiwuetandle extrayendo la vesion del docker file
-      - name: Docker image creation
-        run: |
-          sudo docker build -t javier/angular_app:0.0.0 .
-          sudo docker images
+      - name: Llamar a la action que me crea el nombre de la imagen
+        uses: ./.github/actions/tagger_action
+      #- name: Docker image creation
+       # run: |
+        #  sudo docker build -t javier/angular_app:0.0.0 .
+         # sudo docker images
           
 
 # subirla a docker hub usando las credenciales en los secrets
