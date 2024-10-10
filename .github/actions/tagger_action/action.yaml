@@ -21,7 +21,7 @@ runs:
       run: |
         
         image_name="${{ inputs.user_name }}/sample-angular-app:${{ inputs.version }}
-        echo "Esta es la imagen desde el action ${{ inputs.version }}
+        echo "Esta es la VERSION desde el action ${{ inputs.version }}"
         echo "image_name=${image_name}" >> $GITHUB_OUTPUT
       shell: bash
           
