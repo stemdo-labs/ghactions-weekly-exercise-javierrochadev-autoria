@@ -1,1 +1,28 @@
-# Este va a ser el workflow de CD
+name: Creación y subida de la imagen de angular
+on:
+  workflow_dispatch:
+jobs:
+  
+  build:
+    runs-on: ubuntu-latest
+    environment: production
+    env: 
+      DOCKER_USER: ${{ secrets.DOCKERHUB_USER }}
+    # Instalar docker
+    steps:
+      - name: Pull image
+        run: |
+          docker pull $DOCKER_USER/sample-angular-app:0.0.0
+      - name: upload container
+        run: |
+          docker run -d -p 8087:80 --name github-weekly $DOCKER_USER/sample-angular-app-nginx:0.0.0
+      - name: Verificación del funcionamiento de la app
+        run: |
+          curl http://localhost:8087
+          
+
+      
+     
+
+      
+          
