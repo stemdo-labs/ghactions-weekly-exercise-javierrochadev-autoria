@@ -31,8 +31,8 @@ jobs:
 
 
       # Llamar a la action que me crea el nombre de la imagen
-      #- name: Llamar a la action que me crea el nombre de la imagen
-      #  uses: ./.github/actions/tagger_action
+      - name: Llamar a la action que me crea el nombre de la imagen
+        uses: ./.github/actions/tagger_action
 
       # Subirla a Docker Hub usando las credenciales en los secrets
       - name: Hacer login en DockerHub
@@ -40,6 +40,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_PASS }}
+      
 
       - id: image_creation
         name: Construir imagen
