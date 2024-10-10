@@ -7,7 +7,7 @@ runs:
       name: Extraer información sobre la version del archivo json
       run: |
           app_version=$(grep -o '"version": *"[^"]*"' package.json | sed 's/"version": "//;s/"//g')
-          echo "app_version=$app_version" >> $GITHUB_OUTPUT
+          echo "image_name=secrets.DOCKERHUB_USER/angular_app:$app_version" >> $GITHUB_OUTPUT
           echo $app_version
       shell: bash
           
