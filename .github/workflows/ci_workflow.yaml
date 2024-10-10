@@ -36,7 +36,7 @@ jobs:
 
       # Subirla a Docker Hub usando las credenciales en los secrets
       - name: Login docker hub
-        run: echo "${{ secrets.DOCKERHUB_PASS }}" | docker login -u "${{ secrets.DOCKERHUB_USER }}" --password-stdin
+        run: echo "${{ secrets.DOCKERHUB_PASS }}" | docker login -u jrochadev --password-stdin
       - id: name_creation
         name: Crear nombre de la imagen
         run: |
@@ -46,13 +46,13 @@ jobs:
       - id: image_creation
         name: Construir imagen
         run: |
-          sudo docker build -t jrochadev/angular_app:0.0.0 .
+          sudo docker build -t jrochadev/sample-angular-app:0.0.0 .
           sudo docker images
 
       - id: image_push
         name: Subir imagen a docker hub
         run: |
-          sudo docker push jrochadev/angular_app:0.0.0
+          sudo docker push jrochadev/sample-angular-app:0.0.0
 
 
       
