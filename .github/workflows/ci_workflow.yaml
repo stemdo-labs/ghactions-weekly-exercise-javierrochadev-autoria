@@ -2,9 +2,12 @@ name: Creación y subida de la imagen de angular
 on:
   workflow_dispatch:
 jobs:
+  
   build:
     runs-on: ubuntu-latest
     environment: production
+    env: 
+      DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER}}
     # Instalar docker
     steps:
       - name: Checkout code
@@ -43,11 +46,14 @@ jobs:
       - id: image_creation
         name: Construir imagen
         run: |
-          sudo docker build -t ${{ steps.name_creation.outputs.image_name }} .
+          sudo docker build -t $DOCKER_USERNAME/angular_appp:0.0.0 .
           sudo docker images
 
       - id: image_push
         name: Subir imagen a docker hub
         run: |
-          sudo docker push ${{ steps.name_creation.outputs.image_name }} 
+          sudo docker push $DOCKER_USERNAME/angular_appp:0.0.0
+
+
+      
           
