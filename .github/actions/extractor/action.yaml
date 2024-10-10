@@ -19,7 +19,7 @@ runs:
     - id: extractor
       name: version_extractor
       run: |
-        field_value=$(grep -o '"${{ inputs.field_name }}": *"[^"]*"' ${{ file_path }} | sed 's/"${{ inputs.field_name }}": "//;s/"//g')
+        field_value=$(grep -o '"${{ inputs.field_name }}": *"[^"]*"' ${{ inputs.file_path }} | sed 's/"${{ inputs.field_name }}": "//;s/"//g')
         echo "field_value=${field_value}" >> $GITHUB_OUTPUT
       shell: bash
 
