@@ -1,1 +1,6 @@
-# Este va a ser el workflow de CI
+# Ijnstlar docker
+
+# crear imagen de docker con el fichero docker file etiwuetandle extrayendo la vesion del docker file
+
+# subirla a docker hub usando las credenciales en los secrets
+
