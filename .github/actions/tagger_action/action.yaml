@@ -9,5 +9,5 @@ runs:
           app_version=$(grep -o '"version": *"[^"]*"' data.json | sed 's/"version": "//;s/"//g')
           echo "app_version=$app_version" >> $GITHUB_OUTPUT
           echo $app_version
-      bash: shell
+      shell: bash
           
