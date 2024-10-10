@@ -33,6 +33,8 @@ jobs:
       # Llamar a la action que me crea el nombre de la imagen
       - name: Llamar a la action que me crea el nombre de la imagen
         uses: ./.github/actions/tagger_action
+        with:
+          user_name: $DOCKER_USER
 
       # Subirla a Docker Hub usando las credenciales en los secrets
       - name: Hacer login en DockerHub
