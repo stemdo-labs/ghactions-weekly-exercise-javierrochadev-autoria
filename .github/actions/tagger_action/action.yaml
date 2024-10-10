@@ -8,6 +8,6 @@ runs:
       run: |
           app_version=$(grep -o '"version": *"[^"]*"' package.json | sed 's/"version": "//;s/"//g')
           echo "image_name=secrets.DOCKERHUB_USER/angular_app:$app_version" >> $GITHUB_OUTPUT
-          echo $app_version
+          echo $image_name
       shell: bash
           
