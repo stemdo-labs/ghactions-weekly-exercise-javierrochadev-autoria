@@ -18,6 +18,9 @@ jobs:
       - name: upload container
         run: |
           docker run -d -p 8087:80 --name github-weekly $DOCKER_USER/sample-angular-app:0.0.0
+      - name: Show containers
+        run: |
+          docker ps 
       - name: Verificación del funcionamiento de la app
         run: |
           curl http://localhost:8087
