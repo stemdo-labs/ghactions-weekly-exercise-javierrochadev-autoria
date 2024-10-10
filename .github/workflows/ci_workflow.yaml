@@ -36,7 +36,7 @@ jobs:
       - id: name_creation
         name: Crear nombre de la imagen
         run: |
-          image_name=javier/angular_app:0.0.0
+          image_name="${{ secrets.DOCKERHUB_USER }}/angular_app:0.0.0"
           echo "image_name=$image_name" >> $GITHUB_OUTPUT
 
       - id: image_creation
