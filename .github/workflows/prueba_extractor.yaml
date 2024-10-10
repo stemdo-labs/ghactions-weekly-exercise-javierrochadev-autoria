@@ -23,4 +23,4 @@ jobs:
       # Mostrar el nombre de la imagen creada
       - name: Mostrando el nombre de la imagen
         run: |
-          echo "The output from the action is: ${{ steps.tagger.outputs.field_value }}"
+          echo "The output from the action is: ${{ steps.extractor.outputs.field_value }}"
