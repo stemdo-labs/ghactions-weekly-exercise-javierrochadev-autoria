@@ -31,18 +31,27 @@ jobs:
 
 
       # Llamar a la action que me crea el nombre de la imagen
-      - name: version_extractor
-        id: extraer_version
-        run: |
-          version=$(grep -o '"version": *"[^"]*"' package.json | sed 's/"version": "//;s/"//g')
-          echo "version=${version}" >> $GITHUB_OUTPUT
+      - name: Extractor de la versión de un fichero JSON
+        id: version_extractor
+        uses: ./.github/actions/extractor
+        with:
+          file_path: ./package.json
+          field_name: version
+          
+      - name: Extractor del nombre de un fichero JSON
+        id: name_extractor
+        uses: ./.github/actions/extractor
+        with:
+          file_path: ./package.json
+          field_name: name
           
       - name: Llamar a la action que me crea el nombre de la imagen
         id: tagger
         uses: ./.github/actions/tagger_action
         with:
           user_name: $DOCKER_USER
-          version: ${{ steps.extraer_version.outputs.version }}
+          app_name: ${{ steps.name_extractor.outputs.field_value }}
+          app_version: ${{ steps.version_extractor.outputs.field_value }}
       # Mostrar el nombre de la imagen creada
       - name: Mostrando el nombre de la imagen
         run: |
