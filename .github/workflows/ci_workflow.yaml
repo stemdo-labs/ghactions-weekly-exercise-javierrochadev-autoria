@@ -36,7 +36,7 @@ jobs:
 
       # Subirla a Docker Hub usando las credenciales en los secrets
       - name: Login docker hub
-        run: echo "${{ secrets.DOCKERHUB_PASS }}" | docker login -u "${{ secrets.DOCKERHUB_USER }}" --password-stdin
+        run: echo "${{ secrets.DOCKERHUB_PASS }}" | docker login -u jrochadev --password-stdin
       - id: name_creation
         name: Crear nombre de la imagen
         run: |
