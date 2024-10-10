@@ -6,7 +6,7 @@ runs:
     - id: version_extractor
       name: Extraer información sobre la version del archivo json
       run: |
-          app_version=$(grep -o '"version": *"[^"]*"' data.json | sed 's/"version": "//;s/"//g')
+          app_version=$(grep -o '"version": *"[^"]*"' package.json | sed 's/"version": "//;s/"//g')
           echo "app_version=$app_version" >> $GITHUB_OUTPUT
           echo $app_version
       shell: bash
