@@ -1,0 +1,19 @@
+name: Construcción y Despliegue de App
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: Valor para el entorno que se va a usar
+        required: true
+        type: string
+
+jobs:
+  show:
+    environment: ${{ inputs.environment}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: show 
+        run: |
+           run: echo "Deploying to environment: ${{ github.job.environment }}"
+      
