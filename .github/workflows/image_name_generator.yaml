@@ -53,6 +53,6 @@ jobs:
       
       - name: Mostrando las variables
         run: |
-          echo "Esta es la variable del paso anterior ${{ steps.value_setter.ouputs.image_final_name }}"
+          echo "Esta es la variable del paso anterior ${{ steps.value_setter.outputs.image_final_name }}"
 
       
