@@ -3,15 +3,9 @@ name: Contrucción y despliegue de app
 on:
   workflow_dispatch:
 
-
-
 jobs:
   call_workflow_CI:
     uses: ./.github/workflows/ci_workflow.yaml
-    with:
-      username: ${{ vars.DOCKERHUB_USER }}
-      password: ${{ vars.DOCKERHUB_PASS }}
-
   call_workflow_CD:
     needs: call_workflow_CI
     uses: ./.github/workflows/cd_workflow.yaml
