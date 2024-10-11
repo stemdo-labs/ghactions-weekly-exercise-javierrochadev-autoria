@@ -9,6 +9,9 @@ on:
       env_name:
         required: true
         type: string
+      branch_name:
+        required: true
+        type: string
 
 jobs:
  

@@ -44,7 +44,7 @@ jobs:
     uses: ./.github/workflows/ci_workflow.yaml
     secrets: inherit
     with:
-      environment: ${{ needs.set_environment.outputs.ENV_NAME }}
+      env_name: ${{ needs.set_environment.outputs.ENV_NAME }}
       branch_name: ${{ needs.set_environment.outputs.BRANCH_NAME }}
 
   call_workflow_CD: 
@@ -53,5 +53,5 @@ jobs:
     secrets: inherit
     with:
         image_name: ${{ needs.call_workflow_CI.outputs.image_name }}
-        environment: ${{ needs.set_environment.outputs.ENV_NAME }}
+        env_name: ${{ needs.set_environment.outputs.ENV_NAME }}
     
