@@ -13,4 +13,4 @@ jobs:
     uses: ./.github/workflows/cd_workflow.yaml
     secrets: inherit
     with:
-      output_variable: ${{ jobs.call_workflow_CI.outputs.image_name }}
+      image_name: ${{ jobs.call_workflow_CI.outputs.image_name }}
