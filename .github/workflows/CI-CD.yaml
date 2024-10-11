@@ -8,8 +8,15 @@ jobs:
     uses: ./.github/workflows/ci_workflow.yaml
     secrets: inherit
 
-  call_workflow_CD: 
-    needs: call_workflow_CI
-    uses: ./.github/workflows/cd_workflow.yaml
-    secrets: inherit
-    
+  mostrar_output:  # Nuevo trabajo para mostrar la salida
+    runs-on: ubuntu-latest
+    needs: call_workflow_CI  # Asegura que este trabajo espera la finalización del trabajo de CI
+    steps:
+      - name: Mostrar salida de CI
+        run: |
+          echo "La imagen es: ${{ jobs.call_workflow_CI.outputs.image_name }}"  # Accediendo a la salida
+
+  # call_workflow_CD: 
+  #   needs: call_workflow_CI
+  #   uses: ./.github/workflows/cd_workflow.yaml
+  #   secrets: inherit
