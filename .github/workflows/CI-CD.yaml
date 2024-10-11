@@ -8,6 +8,13 @@ jobs:
   call_image_name_generator:
     uses: ./.github/workflows/image_name_generator.yaml
     secrets: inherit
+  main_task:
+    needs: call_image_name_generator
+    runs-on: ubuntu-latest  
+    steps:
+      - name: MOstrar mensaje para tarea principal
+        run: |
+          echo "El nombre de la imagen es ${{ steps.call_image_name_generator.ouputs.image_file_name }}"
 #   call_workflow_CI:
 #     uses: ./.github/workflows/ci_workflow.yaml
 #     secrets: inherit

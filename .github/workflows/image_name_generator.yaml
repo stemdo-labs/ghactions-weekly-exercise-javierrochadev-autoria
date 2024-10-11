@@ -2,9 +2,12 @@ name: Creación y subida de la imagen de angular
 on:
   workflow_call:
 jobs:
-  
   build:
     runs-on: ubuntu-latest
+    outputs:
+      image_final_name:
+        description: Nombre de la imagen
+        value: ${{ steps.value_setter.outputs.image_name }}
     environment: production
    
     # Instalar docker
@@ -41,8 +44,10 @@ jobs:
           
       # Mostrar el nombre de la imagen creada
       - name: Mostrando el nombre de la imagen
+        id: value_setter
         run: |
           echo "The output from the action is: ${{ steps.tagger.outputs.image_name }}"
+          echo "image_final_name=${{ steps.tagger.outputs.image_name }}" >> $GITHUB_OUTPUT
   
 
       
