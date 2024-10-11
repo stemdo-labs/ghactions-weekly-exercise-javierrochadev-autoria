@@ -30,6 +30,7 @@ jobs:
  
   build:
     runs-on: ubuntu-latest
+    if: ${{ $always() }}
     needs: test
     outputs:
       image_name: ${{ steps.set_output.outputs.image_name }}
