@@ -3,7 +3,10 @@ name: Despliegue de la aplicación
 
 on:
   workflow_call:
-
+    inputs:
+      image_name:
+        required: true
+        type: string
 
 jobs:
   build:
