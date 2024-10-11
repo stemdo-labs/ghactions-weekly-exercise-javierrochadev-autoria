@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: MOstrar mensaje para tarea principal
         run: |
-          echo "El nombre de la imagen es ${{ steps.call_image_name_generator.outputs.image_final_name }}"
+          echo "El nombre de la imagen es ${{ needs.call_image_name_generator.outputs.image_final_name }}"
 #   call_workflow_CI:
 #     uses: ./.github/workflows/ci_workflow.yaml
 #     secrets: inherit
