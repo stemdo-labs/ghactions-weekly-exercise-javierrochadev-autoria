@@ -3,11 +3,10 @@ name: Despliegue de la aplicación
 
 on:
   workflow_call: # Este flujo de trabajo debe ser llamado por otro
-
-inputs:
-  image_name:
-    description: 'Este es el nombre de la imagen'
-    required: true
+    inputs:
+      image_name:
+      description: 'Este es el nombre de la imagen'
+      required: true
 
 jobs:
   build:
