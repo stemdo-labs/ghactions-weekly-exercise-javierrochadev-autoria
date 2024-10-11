@@ -2,7 +2,9 @@ name: Creación y subida de la imagen de angular
 on:
   workflow_call:
     outputs:
-      image_name: ${{ jobs.set_output.outputs.image_name }}
+      image_name:
+        description: Nombre de la imagen
+        value: ${{ jobs.set_output.outputs.image_name }}
 jobs:
   
   build:
