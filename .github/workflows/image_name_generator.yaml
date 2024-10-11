@@ -5,7 +5,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
-      calculated_value: ${{ steps.value_setter.outputs.image_name }}
+      image_final_name:
+        description: Nombre de la imagen
+        value: ${{ steps.value_setter.outputs.image_name }}
     environment: production
    
     # Instalar docker
@@ -45,7 +47,7 @@ jobs:
         id: value_setter
         run: |
           echo "The output from the action is: ${{ steps.tagger.outputs.image_name }}"
-          echo "image_name=${{ steps.tagger.outputs.image_name }}" >> $GITHUB_OUTPUT
+          echo "image_final_name=${{ steps.tagger.outputs.image_name }}" >> $GITHUB_OUTPUT
   
 
       
