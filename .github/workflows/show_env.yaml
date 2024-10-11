@@ -10,10 +10,11 @@ on:
 
 jobs:
   show:
-    environment: ${{ inputs.environment}}
+    environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     steps:
       - name: show 
         run: |
-          echo "Este es el nombre del usuario $ {{ vars.DOCKERHUB_USER }}"
+          echo "Este es el nombre del usuario ${{ vars.DOCKERHUB_USER }}"
+
       
