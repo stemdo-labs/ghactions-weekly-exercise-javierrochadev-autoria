@@ -1,6 +1,6 @@
 name: Creación y subida de la imagen de angular
 on:
-  workflow_dispatch:
+  workflow_call:
 jobs:
   
   build:
