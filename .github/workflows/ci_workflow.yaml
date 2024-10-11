@@ -5,6 +5,11 @@ on:
       image_name:
         description: Nombre de la imagen
         value: ${{ jobs.build.outputs.image_name }}
+    inputs:
+      env_name:
+        required: true
+        type: string
+
 jobs:
  
   build:
@@ -12,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       image_name: ${{ steps.set_output.outputs.image_name }}
-    environment: production
+    environment: ${{ inputs.env_name}}
    
     # Instalar docker
     steps:
