@@ -2,12 +2,12 @@
 name: Despliegue de la aplicación
 
 on:
-  workflow_call: # Este flujo de trabajo debe ser llamado por otro
+  workflow_call:
     inputs:
       image_name:
         description: 'Este es el nombre de la imagen'
         required: true
-        type: string
+        type: string  # Especifica el tipo de entrada
 
 jobs:
   build:
@@ -32,4 +32,4 @@ jobs:
 
       - name: Verificación del funcionamiento de la app
         run: |
-          curl http://localhost:8080
+          cur
