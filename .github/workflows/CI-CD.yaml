@@ -11,7 +11,7 @@ jobs:
   set_environment:
     outputs:
       ENV_NAME: ${{ steps.set_env.outputs.env_name }}
-      BRANCH_NAME: ${{ steps.set_env.outputs.BRANCH_NAME }}
+      BRANCH_NAME: ${{ steps.get_branch.outputs.BRANCH_NAME }}
     runs-on: ubuntu-latest
     steps:
       - id: get_branch
