@@ -4,7 +4,7 @@ on:
     outputs:
       image_final_name:
         description: "Nombre final de la imagen"
-        value: ${{ steps.output_setter.outputs.image_final_name }}
+        value: ''
 
 jobs:
   build:
