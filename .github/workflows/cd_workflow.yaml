@@ -17,11 +17,11 @@ jobs:
 
       - name: Pull image
         run: |
-          docker pull ${{ vars.DOCKERHUB_USER }}/${{ inputs.image_name }}:0.0.0
+          docker pull {{ inputs.image_name }}:0.0.0
 
       - name: Run container
         run: |
-          docker run -d -p 8080:8080 --name github-weekly ${{ vars.DOCKERHUB_USER }}/${{ inputs.image_name }}:0.0.0
+          docker run -d -p 8080:8080 --name github-weekly ${{ inputs.image_name }}:0.0.0
 
       - name: Show containers
         run: |
