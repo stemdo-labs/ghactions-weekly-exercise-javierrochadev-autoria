@@ -1,0 +1,11 @@
+name: Contrucción y despliegue de app
+
+on:
+  workflow_dispatch:
+jobs:
+  call_workflow_CI:
+    uses: ./.github/workflows/ci-workflow.yaml
+  call_workflow_CD:
+    needs: call_workflow_CI
+    uses: ./.github/workflows/cd-workflow.yaml
+    
