@@ -11,6 +11,7 @@ jobs:
   call_workflow_CD:  
     needs: call_workflow_CI
     uses: ./.github/workflows/cd_workflow.yaml
-    secrets: inherit
     with:
       image_name: ${{ jobs.call_workflow_CI.outputs.image_name }}
+    secrets: inherit
+    
