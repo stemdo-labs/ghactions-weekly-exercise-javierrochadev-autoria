@@ -16,6 +16,7 @@ jobs:
       - name: Usar la variable de salida del flujo de trabajo reutilizable
         run: |
           echo "El nombre de la imagen desde el flujo de trabajo reutilizable es: ${{ needs.call_image_name_generator.outputs.image_final_name }}"
+
 #     uses: ./.github/workflows/ci_workflow.yaml
 #     secrets: inherit
 #   call_workflow_CD:
