@@ -1,12 +1,13 @@
 name: Creación y subida de la imagen de angular
 on:
   workflow_call:
+    outputs:
+      image_name: ${{ steps.set_output.outputs.image_name }}
 jobs:
   
   build:
     runs-on: ubuntu-latest
-    outputs:
-      image_name: ${{ steps.set_output.outputs.image_name }}
+    
     environment: production
    
     # Instalar docker
