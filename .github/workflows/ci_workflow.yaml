@@ -6,10 +6,12 @@ on:
         description: Nombre de la imagen
         value: ${{ jobs.build.outputs.image_name }}
 jobs:
-  
+ 
   build:
+        
     runs-on: ubuntu-latest
-    
+    outputs:
+      image_name: ${{ steps.set_output.outputs.image_name }}
     environment: production
    
     # Instalar docker
@@ -63,7 +65,8 @@ jobs:
           app_name: ${{ steps.name_extractor.outputs.field_value }}
           app_version: ${{ steps.version_extractor.outputs.field_value }}
       # Mostrar el nombre de la imagen creada
-      - name: Mostrando el nombre de la imagen
+      - id: set_output
+        name: Mostrando el nombre de la imagen
         run: |
           echo "The output from the action is: ${{ steps.tagger.outputs.image_name }}"
            echo "image_name=${{ steps.tagger.outputs.image_name }}" >> $GITHUB_OUTPUT
