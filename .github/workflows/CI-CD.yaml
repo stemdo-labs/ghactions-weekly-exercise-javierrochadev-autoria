@@ -27,25 +27,20 @@ jobs:
             echo "env_name=UAT" >> $GITHUB_OUTPUT
           fi
 
-  show_env: 
+ 
+ 
+  call_workflow_CI: 
     needs: set_environment
-    uses: ./.github/workflows/show_env.yaml
+    uses: ./.github/workflows/ci_workflow.yaml
     secrets: inherit
     with:
       environment: ${{ needs.set_environment.outputs.env_name }}
- 
-  # call_workflow_CI: 
-  #   needs: set_environment
-  #   uses: ./.github/workflows/ci_workflow.yaml
-  #   secrets: inherit
-  #   with:
-  #     environment: ${{ needs.set_environment.outputs.env_name }}
 
-  # call_workflow_CD: 
-  #   needs: call_workflow_CI
-  #   uses: ./.github/workflows/cd_workflow.yaml
-  #   secrets: inherit
-  #   with:
-  #       image_name: ${{ needs.call_workflow_CI.outputs.image_name }}
-  #       environment: ${{ needs.set_environment.outputs.env_name }}
+  call_workflow_CD: 
+    needs: call_workflow_CI
+    uses: ./.github/workflows/cd_workflow.yaml
+    secrets: inherit
+    with:
+        image_name: ${{ needs.call_workflow_CI.outputs.image_name }}
+        environment: ${{ needs.set_environment.outputs.env_name }}
     
