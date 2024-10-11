@@ -29,4 +29,4 @@ jobs:
 
       - name: Verificación del funcionamiento de la app
         run: |
-          cur
+          curl http://localhost:8080
