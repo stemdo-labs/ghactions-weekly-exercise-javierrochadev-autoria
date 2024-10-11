@@ -5,8 +5,9 @@ on:
   workflow_call: # Este flujo de trabajo debe ser llamado por otro
     inputs:
       image_name:
-      description: 'Este es el nombre de la imagen'
-      required: true
+        description: 'Este es el nombre de la imagen'
+        required: true
+        type: string
 
 jobs:
   build:
@@ -19,11 +20,11 @@ jobs:
 
       - name: Pull image
         run: |
-          docker pull ${{ vars.DOCKERHUB_USER }}/sample-angular-app:0.0.0
+          docker pull ${{ vars.DOCKERHUB_USER }}/${{ inputs.image_name }}:0.0.0
 
-      - name: Upload container
+      - name: Run container
         run: |
-          docker run -d -p 8080:8080 --name github-weekly ${{ vars.DOCKERHUB_USER }}/sample-angular-app:0.0.0
+          docker run -d -p 8080:8080 --name github-weekly ${{ vars.DOCKERHUB_USER }}/${{ inputs.image_name }}:0.0.0
 
       - name: Show containers
         run: |
