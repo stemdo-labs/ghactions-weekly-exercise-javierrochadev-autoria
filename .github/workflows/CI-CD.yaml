@@ -7,11 +7,16 @@ jobs:
   call_workflow_CI: 
     uses: ./.github/workflows/ci_workflow.yaml
     secrets: inherit
+  mostar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: mostrar imahe
+        run: |
+          echo ${{ jobs.call_workflow_CI.outputs.image_name }}
+    
 
   call_workflow_CD:  
     needs: call_workflow_CI
     uses: ./.github/workflows/cd_workflow.yaml
-    with:
-      image_name: ${{ jobs.call_workflow_CI.outputs.image_name }}
     secrets: inherit
     
