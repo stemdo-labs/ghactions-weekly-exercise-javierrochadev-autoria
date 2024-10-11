@@ -7,6 +7,10 @@ on:
         description: Valor para el entorno que se va a usar
         required: true
         type: string
+      branch_name:
+        description: Valor para el entorno que se va a usar
+        required: true
+        type: string
 
 jobs:
   show:
@@ -15,6 +19,6 @@ jobs:
     steps:
       - name: show 
         run: |
-          echo "Este es el nombre del usuario ${{ github.environment }}"
+          echo "Este es el nombre del usuario ${{ inputs.branch_name }}"
 
       
