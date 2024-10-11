@@ -4,7 +4,7 @@ on:
     outputs:
       image_name:
         description: Nombre de la imagen
-        value: ${{ jobs.set_output.outputs.image_name }}
+        value: ${{ jobs.build.outputs.image_name }}
 jobs:
   
   build:
