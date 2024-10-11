@@ -17,7 +17,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    if: ${{ inputs.branch_name }} == 'main'
+    if: ${{ inputs.branch_name == 'main' }}
     steps:
       - id: pass_testing
         name: Testing de funcionamiento de código
