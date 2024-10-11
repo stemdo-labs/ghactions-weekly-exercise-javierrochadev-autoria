@@ -1,6 +1,11 @@
 name: Extracción del nombre de la imagen
 on:
   workflow_call:
+    outputs:
+      image_final_name:
+        description: "Nombre final de la imagen"
+        value: ${{ steps.output_setter.outputs.image_final_name }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,8 +38,8 @@ jobs:
           app_name: ${{ steps.name_extractor.outputs.field_value }}
           app_version: ${{ steps.version_extractor.outputs.field_value }}
 
-      # Mostrar el nombre de la imagen creada y establecer la salida
-      - name: Mostrando el nombre de la imagen
-        id: value_setter
+      # Establecer la salida del trabajo como un valor simple
+      - name: Establecer salida del nombre de la imagen
+        id: output_setter
         run: |
-          echo "image_final_name=${{ steps.tagger.outputs.image_name }}" >> $GITHUB_ENV
+          echo "image_final_name=${{ steps.tagger.outputs.image_name }}" >> $GITHUB_OUTPUT
