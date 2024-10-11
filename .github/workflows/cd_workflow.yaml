@@ -17,7 +17,7 @@ jobs:
 
       - name: Pull image
         run: |
-          docker pull {{ inputs.image_name }}
+          docker pull ${{ inputs.image_name }}
 
       - name: Run container
         run: |
