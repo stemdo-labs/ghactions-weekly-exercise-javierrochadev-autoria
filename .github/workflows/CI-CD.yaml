@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
 
 jobs:
+# Extraemos el nombre de la imagen para usarla en los dos reusables
+  call_image_name_generator:
+    uses: ./.github/workflows/image_name_generator.yaml
   call_workflow_CI:
     uses: ./.github/workflows/ci_workflow.yaml
     secrets: inherit
