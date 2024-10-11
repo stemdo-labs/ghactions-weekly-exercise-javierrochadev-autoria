@@ -1,17 +1,47 @@
 name: Construcción y Despliegue de App
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - develop
 
 jobs:
-  call_workflow_CI: 
-    uses: ./.github/workflows/ci_workflow.yaml
-    secrets: inherit
 
-  call_workflow_CD: 
-    needs: call_workflow_CI
-    uses: ./.github/workflows/cd_workflow.yaml
-    secrets: inherit
-    with:
-        image_name: ${{ needs.call_workflow_CI.outputs.image_name }}
+  set_environment:
+    runs-on: ubuntu-latest
+    steps:
+      - id: get_branch
+        name: Obtener el nombre de la rama donde se está realizando la acción
+        run: |
+          echo "BRANCH_NAME=$(basename $GITHUB_REF)" >> $GITHUB_OUTPUT
+
+      - id: set_env
+        name: Setear el valor del environment en función de la rama donde se realiza la acción
+        run: |
+          if [ "${{ steps.get_branch.outputs.BRANCH_NAME }}" == "main" ]; then
+            echo "ENVIRONMENT=production" >> $GITHUB_ENV
+          elif [ "${{ steps.get_branch.outputs.BRANCH_NAME }}" == "develop" ]; then
+            echo "ENVIRONMENT=UAT" >> $GITHUB_ENV
+          fi
+  set_environmnt:
+    runs-on: ubuntu-latest
+    steps:
+      - id: get_branc
+        name: Obtener el nombre de la rama donde se está realizando la acción
+        run: |
+          echo ${{ env.ENVIRONMENT }}
+#   call_workflow_CI: 
+#     uses: ./.github/workflows/ci_workflow.yaml
+#     secrets: inherit
+#     with:
+#       environment: ${{ env.ENVIRONMENT }}
+
+#   call_workflow_CD: 
+#     needs: call_workflow_CI
+#     uses: ./.github/workflows/cd_workflow.yaml
+#     secrets: inherit
+#     with:
+#         image_name: ${{ needs.call_workflow_CI.outputs.image_name }}
+#         environment: ${{ env.ENVIRONMENT }}
     
