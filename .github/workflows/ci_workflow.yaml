@@ -61,6 +61,8 @@ jobs:
       - name: Mostrando el nombre de la imagen
         run: |
           echo "The output from the action is: ${{ steps.tagger.outputs.image_name }}"
+           echo "image_name=${{ steps.tagger.outputs.image_name }}" >> $GITHUB_OUTPUT
+   
   
 
       # Subirla a Docker Hub usando las credenciales en los secrets

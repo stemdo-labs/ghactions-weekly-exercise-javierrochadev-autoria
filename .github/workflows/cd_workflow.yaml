@@ -1,31 +1,34 @@
-
+# .github/workflows/deploy_workflow.yaml
 name: Despliegue de la aplicación
 
 on:
-  workflow_call:
+  workflow_call: # Este flujo de trabajo debe ser llamado por otro
+    inputs:
+      image_name:
+      description: 'Este es el nombre de la imagen'
+      required: true
+
 jobs:
-  
   build:
     runs-on: ubuntu-latest
     environment: production
-    # Instalar docker
     steps:
+      - name: Mostrar el nombre de la imagen
+        run: |
+          echo "El nombre de la imagen en el CD es: ${{ inputs.image_name }}"
+
       - name: Pull image
         run: |
           docker pull ${{ vars.DOCKERHUB_USER }}/sample-angular-app:0.0.0
-      - name: upload container
+
+      - name: Upload container
         run: |
           docker run -d -p 8080:8080 --name github-weekly ${{ vars.DOCKERHUB_USER }}/sample-angular-app:0.0.0
+
       - name: Show containers
         run: |
           docker ps 
+
       - name: Verificación del funcionamiento de la app
         run: |
           curl http://localhost:8080
-          
-
-      
-     
-
-      
-          
