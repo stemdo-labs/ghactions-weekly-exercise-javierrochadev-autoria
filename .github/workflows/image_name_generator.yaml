@@ -1,9 +1,11 @@
-name: Creación y subida de la imagen de angular
+name: Extracción del nombre de la imagen
 on:
   workflow_call:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: production
+
     # outputs:
     #   image_final_name:
     #     description: Nombre de la imagen
@@ -48,8 +50,9 @@ jobs:
         run: |
           echo "The output from the action is: ${{ steps.tagger.outputs.image_name }}"
           echo "image_final_name=${{ steps.tagger.outputs.image_name }}" >> $GITHUB_OUTPUT
+      
       - name: Mostrando las variables
         run: |
           echo "Esta es la variable del paso anterior ${{ steps.value_setter.ouputs.image_final_name }}"
-   
+
       
