@@ -20,6 +20,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Mostrando las variables
+        run: |
+          echo ${{ inputs.username }}
+          echo ${{ inputs.password }}
+          
+      
       
       # Paso para instalar Docker
      # - name: Install Docker
