@@ -8,8 +8,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     environment: production
-    env: 
-      DOCKER_USER: ${{ secrets.DOCKERHUB_USER }}
     # Instalar docker
     steps:
       - name: Pull image
@@ -17,7 +15,7 @@ jobs:
           docker pull $DOCKER_USER/sample-angular-app:0.0.0
       - name: upload container
         run: |
-          docker run -d -p 8080:8080 --name github-weekly $DOCKER_USER/sample-angular-app:0.0.0
+          docker run -d -p 8080:8080 --name github-weekly ${{ vars.DOCKERHUB_USER }}/sample-angular-app:0.0.0
       - name: Show containers
         run: |
           docker ps 
