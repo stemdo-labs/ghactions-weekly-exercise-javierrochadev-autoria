@@ -3,20 +3,14 @@ name: Despliegue de la aplicación
 
 on:
   workflow_call:
-    inputs:
-      image_name:
-        description: 'Este es el nombre de la imagen'
-        required: true
-        type: string  # Especifica el tipo de entrada
+
 
 jobs:
   build:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - name: Mostrar el nombre de la imagen
-        run: |
-          echo "El nombre de la imagen en el CD es: ${{ inputs.image_name }}"
+     
 
       - name: Pull image
         run: |
