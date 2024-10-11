@@ -1,25 +1,16 @@
-name: Contrucción y despliegue de app
+name: Construcción y Despliegue de App
 
 on:
   workflow_dispatch:
 
 jobs:
-  call_image_name_generator:  # Nombre del trabajo que llama al flujo reutilizable
-    uses: ./.github/workflows/image_name_generator.yaml 
-    secrets: inherit 
-    
+  call_workflow_CI: 
+    uses: ./.github/workflows/ci_workflow.yaml
+    secrets: inherit
 
-  another-job:  
-    runs-on: ubuntu-latest
-    needs: call_image_name_generator
-    steps:
-      - name: Usar la variable de salida del flujo de trabajo reutilizable
-        run: |
-          echo "El nombre de la imagen desde el flujo de trabajo reutilizable es: ${{ needs.call_image_name_generator.outputs.image_final_name }}"
-
-#     uses: ./.github/workflows/ci_workflow.yaml
-#     secrets: inherit
-#   call_workflow_CD:
-#     needs: call_workflow_CI
-#     uses: ./.github/workflows/cd_workflow.yaml
-#     secrets: inherit
+  call_workflow_CD:  
+    needs: call_workflow_CI
+    uses: ./.github/workflows/cd_workflow.yaml
+    secrets: inherit
+    with:
+      output_variable: ${{ jobs.call_workflow_CI.outputs.image_name }}
