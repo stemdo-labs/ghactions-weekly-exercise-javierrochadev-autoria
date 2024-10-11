@@ -1,12 +1,17 @@
 name: Construcción y Despliegue de App
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - develop
 
 jobs:
   call_workflow_CI: 
     uses: ./.github/workflows/ci_workflow.yaml
     secrets: inherit
+    with:
+      environment: production
 
   call_workflow_CD: 
     needs: call_workflow_CI
@@ -14,4 +19,5 @@ jobs:
     secrets: inherit
     with:
         image_name: ${{ needs.call_workflow_CI.outputs.image_name }}
+        environment: production
     
