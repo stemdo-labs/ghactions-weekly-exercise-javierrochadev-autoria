@@ -15,9 +15,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     environment: production
-    env: 
-      DOCKER_USER: ${{ inputs.username }}
-      DOCKER_PASS: ${{ inputs.password }}
+   
     # Instalar docker
     steps:
       - name: Checkout code
@@ -59,7 +57,7 @@ jobs:
         id: tagger
         uses: ./.github/actions/tagger_action
         with:
-          user_name: $DOCKER_USER
+          user_name: ${{ inputs.username }}
           app_name: ${{ steps.name_extractor.outputs.field_value }}
           app_version: ${{ steps.version_extractor.outputs.field_value }}
       # Mostrar el nombre de la imagen creada
@@ -72,8 +70,8 @@ jobs:
       - name: Hacer login en DockerHub
         uses: docker/login-action@v3
         with:
-          username: $DOCKER_USER
-          password: $DOCKER_PASS
+          username: ${{ inputs.username }}
+          password: ${{ inputs.password }}
       
 
       - id: image_creation
