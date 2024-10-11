@@ -15,7 +15,5 @@ jobs:
     steps:
       - name: show 
         run: |
-          echo "Deploying to environment: ${{ inputs.environment }}"  # Se usa el input directamente
-          echo "GITHUB_ENV variable: $GITHUB_ENV"  # Muestra las variables de entorno del job
-          echo "Deploy environment: ${{ job.environment.name }}"
+          echo "Este es el nombre del usuario $ {{ vars.DOCKERHUB_USER }}"
       
