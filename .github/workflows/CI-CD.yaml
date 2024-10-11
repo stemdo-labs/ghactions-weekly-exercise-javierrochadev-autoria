@@ -10,7 +10,8 @@ jobs:
 
   set_environment:
     outputs:
-      env_name: ${{ steps.set_env.outputs.env_name }}
+      ENV_NAME: ${{ steps.set_env.outputs.env_name }}
+      BRANCH_NAME: ${{ steps.set_env.outputs.BRANCH_NAME }}
     runs-on: ubuntu-latest
     steps:
       - id: get_branch
@@ -22,9 +23,9 @@ jobs:
         name: Setear el valor del environment en función de la rama donde se realiza la acción
         run: |
           if [ "${{ steps.get_branch.outputs.BRANCH_NAME }}" == "main" ]; then
-            echo "env_name=production" >> $GITHUB_OUTPUT
+            echo "ENV_NAME=production" >> $GITHUB_OUTPUT
           elif [ "${{ steps.get_branch.outputs.BRANCH_NAME }}" == "develop" ]; then
-            echo "env_name=UAT" >> $GITHUB_OUTPUT
+            echo "ENV_NAME=UAT" >> $GITHUB_OUTPUT
           fi
 
 
@@ -36,13 +37,15 @@ jobs:
     uses: ./.github/workflows/show_env.yaml
     secrets: inherit
     with:
-      environment: ${{ needs.set_environment.outputs.env_name }}
+      environment: ${{ needs.set_environment.outputs.ENV_NAME }}
+      branch_name: ${{ needs.set_environment.outputs.BRANCH_NAME }}
   # call_workflow_CI: 
   #   needs: set_environment
   #   uses: ./.github/workflows/ci_workflow.yaml
   #   secrets: inherit
   #   with:
-  #     environment: ${{ needs.set_environment.outputs.env_name }}
+  #     environment: ${{ needs.set_environment.outputs.ENV_NAME }}
+  #     branch_name: ${{ needs.set_environment.outputs.BRANCH_NAME }}
 
   # call_workflow_CD: 
   #   needs: call_workflow_CI
@@ -50,5 +53,5 @@ jobs:
   #   secrets: inherit
   #   with:
   #       image_name: ${{ needs.call_workflow_CI.outputs.image_name }}
-  #       environment: ${{ needs.set_environment.outputs.env_name }}
+  #       environment: ${{ needs.set_environment.outputs.ENV_NAME }}
     
