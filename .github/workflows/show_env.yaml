@@ -15,5 +15,5 @@ jobs:
     steps:
       - name: show 
         run: |
-           run: echo "Deploying to environment: ${{ github.job.environment }}"
+          echo "Deploying to environment: ${{ github.job.environment }}"
       
