@@ -12,9 +12,9 @@ on:
         type: string
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-    environment: production
+    environment: ${{ inputs.env_name }}
     steps:
      
 
