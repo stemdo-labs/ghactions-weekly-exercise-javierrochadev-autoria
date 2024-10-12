@@ -44,11 +44,15 @@ jobs:
       env_name: ${{ needs.set_environment.outputs.ENV_NAME }}
       branch_name: ${{ needs.set_environment.outputs.BRANCH_NAME }}
 
+  # call_workflow_CD: 
+  #   needs: call_workflow_CI
+  #   uses: ./.github/workflows/cd_workflow.yaml
+  #   secrets: inherit
+  #   with:
+  #       image_name: ${{ needs.call_workflow_CI.outputs.image_name }}
+  #       env_name: ${{ needs.set_environment.outputs.ENV_NAME }}
   call_workflow_CD: 
     needs: call_workflow_CI
-    uses: ./.github/workflows/cd_workflow.yaml
-    secrets: inherit
-    with:
-        image_name: ${{ needs.call_workflow_CI.outputs.image_name }}
-        env_name: ${{ needs.set_environment.outputs.ENV_NAME }}
+    run: |
+      echo "Esta es el puerto ${{ needs.call_workflow_CI.outputs.port_value_nginx }}"
     

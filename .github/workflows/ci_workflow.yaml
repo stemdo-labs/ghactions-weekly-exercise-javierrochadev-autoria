@@ -5,6 +5,9 @@ on:
       image_name:
         description: Nombre de la imagen
         value: ${{ jobs.build.outputs.image_name }}
+      port_value_nginx:
+        description: Puerto donde recibe las solicitudes nginx
+        value: ${{ jobs.build.outputs.port_value_nginx }}
     inputs:
       env_name:
         required: true
@@ -34,9 +37,10 @@ jobs:
     needs: test
     outputs:
       image_name: ${{ steps.set_output.outputs.image_name }}
+      port_nginx: ${{ steps.port_extractor.outputs.field_value }}
     environment: ${{ inputs.env_name}}
    
-    # Instalar docker
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -58,9 +62,13 @@ jobs:
 #      sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 #      sudo docker run hello-world
 
-
-      # Llamar a la action que me crea el nombre de la imagen
-
+      - name: Extractor de el puerto que acepta nginx del fichero de configuración
+        id: port_extractor
+        uses: ./.github/actions/extractor
+        with:
+          file_path: ${{ vars.PACKAGE_JSON_PATH }}
+          field_name: listen
+          file_ext: conf
       
       - name: Extractor de la versión de un fichero JSON
         id: version_extractor
@@ -68,6 +76,7 @@ jobs:
         with:
           file_path: ${{ vars.PACKAGE_JSON_PATH }}
           field_name: version
+          file_ext: json
           
       - name: Extractor del nombre de un fichero JSON
         id: name_extractor
@@ -83,14 +92,12 @@ jobs:
           user_name: ${{ vars.DOCKERHUB_USER }}
           app_name: ${{ steps.name_extractor.outputs.field_value }}
           app_version: ${{ steps.version_extractor.outputs.field_value }}
-      # Mostrar el nombre de la imagen creada
+          
       - id: set_output
-        name: Mostrando el nombre de la imagen
+        name: Setear el valor del nombre de la imagen como ouput
         run: |
-          echo "The output from the action is: ${{ steps.tagger.outputs.image_name }}"
           echo "image_name=${{ steps.tagger.outputs.image_name }}" >> $GITHUB_OUTPUT
 
-      # Subirla a Docker Hub usando las credenciales en los secrets
       - name: Hacer login en DockerHub
         uses: docker/login-action@v3
         with:
