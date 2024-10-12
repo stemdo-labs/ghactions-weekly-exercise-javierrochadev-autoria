@@ -1,0 +1,31 @@
+# .github/workflows/deploy_workflow.yaml
+name: Despliegue de la aplicación
+
+on:
+  workflow_call:
+    inputs:
+      env_name:
+        required: true
+        type: string
+      version_change:
+        required: true
+        type: string
+        default: 'patch'
+
+jobs:
+  update_version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    environment: ${{ inputs.env_name }}
+    steps:
+
+      - name:  'Automated Version Bump'
+        uses:  'phips28/gh-action-bump-version@master'
+        env:
+          GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
+          PACKAGEJSON_DIR:  ${{ vars.PACKAGE_JSON_PATH }}
+          
+        with:
+          version-type: ${{ inputs.version_change }}
+          commit-message: 'CI: bumps version to {{version}} [skip ci]'
