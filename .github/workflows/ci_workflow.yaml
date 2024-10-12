@@ -66,7 +66,7 @@ jobs:
         id: port_extractor
         uses: ./.github/actions/extractor
         with:
-          file_path: ${{ vars.PACKAGE_JSON_PATH }}
+          file_path: ${{ vars.NGINX_CONF_PATH }}
           field_name: listen
           file_ext: conf
       
