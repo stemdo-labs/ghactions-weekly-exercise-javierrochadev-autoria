@@ -1,9 +1,15 @@
 name: Construcción y Despliegue de App
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - develop
 permissions:
       contents: write
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
 
