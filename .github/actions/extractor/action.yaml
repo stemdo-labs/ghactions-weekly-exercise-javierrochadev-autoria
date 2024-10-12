@@ -25,7 +25,7 @@ runs:
       run: |
         if [[ "${{ inputs.file_ext }}" == "json" ]]; then
           field_value=$(grep -o '"${{ inputs.field_name }}": *"[^"]*"' ${{ inputs.file_path }} | sed 's/"${{ inputs.field_name }}": "//;s/"//g')
-        elif [[ "${{ inputs.file_ext }}" == "yaml" || "${{ inputs.file_ext }}" == "yml" ]]; then
+        elif [[ "${{ inputs.file_ext }}" == "conf" ]]; then
           field_value=$(grep -o "${{ inputs.field_name }}: *[^ ]*" ${{ inputs.file_path }} | sed 's/${{ inputs.field_name }}: //')
         else
           echo "Extensión no soportada"
