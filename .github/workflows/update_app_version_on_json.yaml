@@ -29,12 +29,4 @@ jobs:
         with:
           version-type: ${{ inputs.version_change }}
           commit-message: 'CI: bumps version to {{version}} [skip ci]'
-      - name: Hacer commit y push
-        run: |
-          git config --local user.name "javierrochadev"
-          git config --local user.email "jrocha@stemdo.io"
-          git add package.json
-          git commit -m "Update version"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
+      
