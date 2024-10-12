@@ -47,7 +47,7 @@ jobs:
     secrets: inherit
     with:
       env_name: ${{ needs.set_environment.outputs.ENV_NAME }}
-      change_version: 'minor'
+      version_change: 'minor'
  
 
   call_workflow_CD: 
