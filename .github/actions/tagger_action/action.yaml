@@ -13,6 +13,10 @@ inputs:
     description: 'Nombre de la aplicación'
     required: true
     default: 'default'
+  branch_name:
+    description: 'Nombre de la rama de ejecución'
+    required: true
+    default: 'main'
 outputs:
   image_name:
     description: 'Nombre de la imagen completa'
@@ -23,7 +27,11 @@ runs:
     - id: image_name_creator
       name: Extraer información sobre la versión del archivo JSON
       run: |
-        image_name="${{ inputs.user_name }}/${{ inputs.app_name }}:${{ inputs.app_version }}"
+        if [[ ${{ inputs.branch_name }} = 'main' ]]; then
+          image_name="${{ inputs.user_name }}/${{ inputs.app_name }}:${{ inputs.app_version }}"
+        elif [[ ${{ inputs.branch_name }} = 'develop' ]]; then
+          image_name="${{ inputs.user_name }}/pre_${{ inputs.app_name }}:${{ inputs.app_version }}"
+        fi
         
         echo "Esta es la imagen desde el action: ${image_name}"
         
