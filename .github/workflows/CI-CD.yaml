@@ -52,13 +52,13 @@ jobs:
   #     env_name: ${{ needs.set_environment.outputs.ENV_NAME }}
   #     branch_name: ${{ needs.get_branch.outputs.BRANCH_NAME }}
 
-  # call_upload_version: 
-  #   needs: set_environment
-  #   uses: ./.github/workflows/update_app_version_on_json.yaml
-  #   secrets: inherit
-  #   with:
-  #     env_name: ${{ needs.set_environment.outputs.ENV_NAME }}
-  #     version_change: 'minor'
+  call_upload_version: 
+    needs: set_environment
+    uses: ./.github/workflows/update_app_version_on_json.yaml
+    secrets: inherit
+    with:
+      env_name: ${{ needs.set_environment.outputs.ENV_NAME }}
+      version_change: 'minor'
  
 
   # call_workflow_CD: 
