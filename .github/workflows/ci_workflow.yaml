@@ -31,10 +31,6 @@ jobs:
           echo "test_api_response";sleep 2
           echo "test_sql_injection";sleep 2
           echo "All tests have been passed."
-      - id: show
-        name: show
-        run: |
-          echo "Este es el nombre del entorno ${{ inputs.env_name }}"
  
   build:
     runs-on: ubuntu-latest
