@@ -8,14 +8,8 @@ jobs:
   set_environment:
     outputs:
       ENV_NAME: ${{ steps.set_env.outputs.env_name }}
-      BRANCH_NAME: ${{ steps.get_branch.outputs.BRANCH_NAME }}
     runs-on: ubuntu-latest
     steps:
-      - id: get_branch
-        name: Obtener el nombre de la rama donde se está realizando la acción
-        run: |
-          echo "BRANCH_NAME=$(basename $GITHUB_REF)" >> $GITHUB_OUTPUT
-
       - id: set_env
         name: Setear el valor del environment en función de la rama donde se realiza la acción
         run: |
@@ -25,15 +19,25 @@ jobs:
             echo "ENV_NAME=UAT" >> $GITHUB_OUTPUT
           fi
 
+  get_branch:
+    outputs:
+      BRANCH_NAME: ${{ steps.get_branch.outputs.BRANCH_NAME }}
+    runs-on: ubuntu-latest
+    steps:
+      - id: get_branch
+        name: Obtener el nombre de la rama donde se está realizando la acción
+        run: |
+          echo "BRANCH_NAME=$(basename $GITHUB_REF)" >> $GITHUB_OUTPUT
+
 
 
   call_workflow_CI: 
-    needs: set_environment
+    needs: [set_environment, get_branch]
     uses: ./.github/workflows/ci_workflow.yaml
     secrets: inherit
     with:
       env_name: ${{ needs.set_environment.outputs.ENV_NAME }}
-      branch_name: ${{ needs.set_environment.outputs.BRANCH_NAME }}
+      branch_name: ${{ needs.get_branch.outputs.BRANCH_NAME }}
  
 
   call_workflow_CD: 
