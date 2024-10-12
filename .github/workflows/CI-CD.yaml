@@ -2,8 +2,9 @@ name: Construcción y Despliegue de App
 
 on:
   push:
-    - main
-    - develop
+    branches:
+      - main
+      - develop
 permissions:
       contents: write
 concurrency:
