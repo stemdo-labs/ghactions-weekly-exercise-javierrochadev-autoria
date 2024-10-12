@@ -40,7 +40,12 @@ jobs:
     with:
       env_name: ${{ needs.set_environment.outputs.ENV_NAME }}
       branch_name: ${{ needs.get_branch.outputs.BRANCH_NAME }}
- 
+
+  # Crecion de un job para cambiar la versión de la app ya que ha sido testeada y subida  docker hub
+  call_update_app_version:
+    needs: call_workflow_CI
+    uses: ./.github/workflows/update_app_version_on_json.yaml
+    
 
   call_workflow_CD: 
     needs: [set_environment, call_workflow_CI]
