@@ -7,10 +7,10 @@ on:
       env_name:
         required: true
         type: string
-      version_change:
-        required: true
-        type: string
-        default: 'patch'
+      # version_change:
+      #   required: true
+      #   type: string
+      #   default: 'patch'
       # branch_name:
       #   required: true
       #   type: string
