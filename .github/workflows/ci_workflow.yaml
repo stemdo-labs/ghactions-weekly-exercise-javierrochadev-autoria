@@ -37,7 +37,6 @@ jobs:
     needs: test
     outputs:
       image_name: ${{ steps.set_output.outputs.image_name }}
-      port_nginx: ${{ steps.port_extractor.outputs.field_value }}
     environment: ${{ inputs.env_name}}
    
 
@@ -61,14 +60,6 @@ jobs:
 #      sudo apt-get update
 #      sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 #      sudo docker run hello-world
-
-      - name: Extractor de el puerto que acepta nginx del fichero de configuración
-        id: port_extractor
-        uses: ./.github/actions/extractor
-        with:
-          file_path: ${{ vars.NGINX_CONF_PATH }}
-          field_name: listen
-          file_ext: conf
       
       - name: Extractor de la versión de un fichero JSON
         id: version_extractor
