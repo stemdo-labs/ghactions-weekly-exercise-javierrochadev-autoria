@@ -47,7 +47,7 @@ jobs:
     secrets: inherit
     with:
       env_name: ${{ needs.set_environment.outputs.ENV_NAME }}
-      version_change: 'patch'
+      #version_change: 'patch'
       #branch_name:  ${{ needs.get_branch.outputs.BRANCH_NAME }}
 
   call_workflow_CD: 
