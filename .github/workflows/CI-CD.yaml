@@ -2,6 +2,8 @@ name: Construcción y Despliegue de App
 
 on:
   workflow_dispatch:
+permissions:
+      contents: write
 
 jobs:
 
