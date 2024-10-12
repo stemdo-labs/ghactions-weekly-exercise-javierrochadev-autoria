@@ -67,7 +67,6 @@ jobs:
         with:
           file_path: ${{ vars.PACKAGE_JSON_PATH }}
           field_name: version
-          file_ext: json
           
       - name: Extractor del nombre de un fichero JSON
         id: name_extractor
