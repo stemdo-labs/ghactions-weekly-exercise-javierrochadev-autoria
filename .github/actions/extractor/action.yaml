@@ -9,10 +9,7 @@ inputs:
     description: 'Ubicación del fichero json'
     required: true
     default: 'default'
-  file_ext:
-    description: 'Extensión del fichero donde se realiza la búsqueda'
-    required: true
-    default: 'default'
+ 
 outputs:
   field_value:
     description: 'Valor del campo a buscar en el fichero'
