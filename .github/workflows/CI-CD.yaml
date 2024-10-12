@@ -48,7 +48,7 @@ jobs:
     secrets: inherit
     with:
         image_name: ${{ needs.call_workflow_CI.outputs.image_name }}
-        env_name: ${{ needs.set_environment.outputs.ENV_NAME }}
+        env_name: ${{ jobs.set_environment.outputs.ENV_NAME }}
     
 
   # show_env: 
