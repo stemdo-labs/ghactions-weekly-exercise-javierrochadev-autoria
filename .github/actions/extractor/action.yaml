@@ -28,8 +28,7 @@ runs:
         elif [[ "${{ inputs.file_ext }}" == "conf" ]]; then
           field_value=$(grep -o "${{ inputs.field_name }}: *[^ ]*" ${{ inputs.file_path }} | sed 's/${{ inputs.field_name }}: //')
         else
-          echo "Extensión no soportada"
-          exit 1
+          echo "Extensión no encontrada entre las disponibles [ 'conf' , 'json']"
         fi
         
         echo "field_value=${field_value}" >> $GITHUB_OUTPUT
