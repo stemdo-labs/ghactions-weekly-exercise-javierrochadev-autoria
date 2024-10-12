@@ -28,14 +28,6 @@ jobs:
 
 
 
- 
-  # show_env: 
-  #   needs: set_environment
-  #   uses: ./.github/workflows/show_env.yaml
-  #   secrets: inherit
-  #   with:
-  #     environment: ${{ needs.set_environment.outputs.ENV_NAME }}
-  #     branch_name: ${{ needs.set_environment.outputs.BRANCH_NAME }}
   call_workflow_CI: 
     needs: set_environment
     uses: ./.github/workflows/ci_workflow.yaml
@@ -43,6 +35,22 @@ jobs:
     with:
       env_name: ${{ needs.set_environment.outputs.ENV_NAME }}
       branch_name: ${{ needs.set_environment.outputs.BRANCH_NAME }}
+ 
+  call_workflow_CD:
+    needs: call_workflow_CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mostrar puerto de Nginx
+        run: |
+          echo "Este es el puerto ${{ needs.call_workflow_CI.outputs.port_value_nginx }}"
+
+  # show_env: 
+  #   needs: set_environment
+  #   uses: ./.github/workflows/show_env.yaml
+  #   secrets: inherit
+  #   with:
+  #     environment: ${{ needs.set_environment.outputs.ENV_NAME }}
+  #     branch_name: ${{ needs.set_environment.outputs.BRANCH_NAME }}
 
   # call_workflow_CD: 
   #   needs: call_workflow_CI
@@ -51,8 +59,4 @@ jobs:
   #   with:
   #       image_name: ${{ needs.call_workflow_CI.outputs.image_name }}
   #       env_name: ${{ needs.set_environment.outputs.ENV_NAME }}
-  call_workflow_CD: 
-    needs: call_workflow_CI
-    run: |
-      echo "Esta es el puerto ${{ needs.call_workflow_CI.outputs.port_value_nginx }}"
     
