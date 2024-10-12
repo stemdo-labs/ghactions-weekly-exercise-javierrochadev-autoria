@@ -48,7 +48,7 @@ jobs:
     with:
       env_name: ${{ needs.set_environment.outputs.ENV_NAME }}
       version_change: 'patch'
-      branch_name:  ${{ needs.get_branch.outputs.BRANCH_NAME }}
+      #branch_name:  ${{ needs.get_branch.outputs.BRANCH_NAME }}
 
   call_workflow_CD: 
     needs: [set_environment, call_workflow_CI]
