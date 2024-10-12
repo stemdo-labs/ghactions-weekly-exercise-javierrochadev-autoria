@@ -16,7 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.env_name }}
     steps:
-     
+
+      - name: show env
+        run: |
+          echo "Este es el entorno ${{ inputs.image_name }}"
 
       - name: Pull image
         run: |
