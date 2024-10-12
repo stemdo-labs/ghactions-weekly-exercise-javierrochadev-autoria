@@ -33,5 +33,5 @@ jobs:
         with:
           version-type: ${{ inputs.version_change }}
           commit-message: 'CI: bumps version to {{version}} [skip ci]'
-          target-branch: ${{ inputs.branch_name}}
+          #target-branch: ${{ inputs.branch_name}}
       
