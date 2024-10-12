@@ -80,6 +80,7 @@ jobs:
         id: tagger
         uses: ./.github/actions/tagger_action
         with:
+          branch_name: ${{ inputs.branch_name }}
           user_name: ${{ vars.DOCKERHUB_USER }}
           app_name: ${{ steps.name_extractor.outputs.field_value }}
           app_version: ${{ steps.version_extractor.outputs.field_value }}
