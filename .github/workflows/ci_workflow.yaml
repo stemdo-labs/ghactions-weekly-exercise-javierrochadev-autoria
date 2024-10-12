@@ -20,6 +20,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.env_name}}
     if: ${{ inputs.branch_name == 'main' }}
     steps:
       - id: pass_testing
