@@ -4,6 +4,7 @@
 
 ## Descripción
 
+
 Este ejercicio tiene como objetivo introducirte al uso práctico de GitHub Actions en un entorno de CI/CD. CI/CD es un conjunto de prácticas que son fundamentales en el desarrollo de software moderno, especialmente en DevOps. Estas prácticas permiten una mayor agilidad, colaboración y calidad en el ciclo de vida del software, facilitando la entrega continua de nuevas funcionalidades y mejoras sin interrupciones importantes.
 
 En un entorno DevOps, CI/CD se convierte en el puente que une el desarrollo y las operaciones, proporcionando a los equipos una plataforma donde pueden colaborar de manera fluida y eficiente. La Integración Continua (CI) garantiza que los desarrolladores puedan integrar su código de manera frecuente y segura en un repositorio central, donde se validan automáticamente los cambios mediante pruebas y builds. Esto ayuda a detectar errores lo antes posible y a mantener la calidad del código a medida que el proyecto crece.
