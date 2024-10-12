@@ -19,7 +19,7 @@ jobs:
 
       - name: show env
         run: |
-          echo "Este es el entorno ${{ inputs.image_name }}"
+          echo "Este es el entorno ${{ inputs.env_name }}"
 
       - name: Pull image
         run: |
