@@ -66,11 +66,4 @@ jobs:
         env_name: ${{ needs.set_environment.outputs.ENV_NAME }}
     
 
-  # show_env: 
-  #   needs: set_environment
-  #   uses: ./.github/workflows/show_env.yaml
-  #   secrets: inherit
-  #   with:
-  #     environment: ${{ needs.set_environment.outputs.ENV_NAME }}
-  #     branch_name: ${{ needs.set_environment.outputs.BRANCH_NAME }}
 
