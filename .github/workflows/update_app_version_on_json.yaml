@@ -15,8 +15,7 @@ on:
 jobs:
   update_version:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    
     environment: ${{ inputs.env_name }}
     steps:
 
