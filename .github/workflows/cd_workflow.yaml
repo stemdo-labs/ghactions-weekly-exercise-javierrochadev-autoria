@@ -12,7 +12,7 @@ on:
         type: string
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     environment: production
     steps:
