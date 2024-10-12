@@ -9,6 +9,10 @@ inputs:
     description: 'Ubicación del fichero json'
     required: true
     default: 'default'
+  file_ext:
+    description: 'Extensión del fichero donde se realiza la búsqueda'
+    required: true
+    default: 'default'
 outputs:
   field_value:
     description: 'Valor del campo a buscar en el fichero'
@@ -19,9 +23,7 @@ runs:
     - id: extractor
       name: version_extractor
       run: |
-          field_value=$(grep -o '"${{ inputs.field_name }}": *"[^"]*"' ${{ inputs.file_path }} | sed 's/"${{ inputs.field_name }}": "//;s/"//g')
-          echo "field_value=${field_value}" >> $GITHUB_OUTPUT
-          echo "Este es el nombre de la app: $field_value"
-        shell: bash
-
-
+        field_value=$(grep -o '"${{ inputs.field_name }}": *"[^"]*"' ${{ inputs.file_path }} | sed 's/"${{ inputs.field_name }}": "//;s/"//g')
+        echo "field_value=${field_value}" >> $GITHUB_OUTPUT
+        echo "Este es el nombre de la app $field_value"
+      shell: bash
