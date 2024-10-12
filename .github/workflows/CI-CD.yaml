@@ -31,15 +31,6 @@ jobs:
           elif [ "${{ needs.get_branch.outputs.BRANCH_NAME }}" = "develop" ]; then
             echo "ENV_NAME=UAT" >> $GITHUB_OUTPUT
           fi
-      - id: show
-        name:  'Automated Version Bump'
-        uses:  'phips28/gh-action-bump-version@master'
-        env:
-          GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
-          PACKAGE_FILENAME:  'package.json'
-        with:
-          version-type: 'minor'
-          commit-message: 'CI: bumps version to {{version}} [skip ci]'
 
 
 
