@@ -500,4 +500,108 @@ runs:
 - **Errores en el Archivo**: Si el archivo JSON no existe o el campo no se encuentra, el comportamiento de la acción dependerá de la configuración del entorno y la gestión de errores en el script.
 
 
+# GitHub Action: **Tagger Action**
+
+Esta acción compuesta se encarga de etiquetar una imagen de Docker con el formato adecuado, dependiendo de la rama desde la que se ejecute. Es útil para establecer un esquema de nomenclatura consistente para las imágenes de la aplicación.
+
+## Descripción
+
+- **Descripción**: Esta acción genera el nombre de la imagen de Docker basada en el nombre de usuario, el nombre de la aplicación, la versión de la aplicación y la rama de ejecución.
+- **Tipo**: Acción compuesta
+
+## Entradas
+
+La acción recibe las siguientes entradas:
+
+```yaml
+inputs:
+  user_name:
+    description: 'Nombre del usuario'
+    required: true
+    default: 'default'
+  app_version:
+    description: 'Versión de la aplicación'
+    required: true
+    default: 'default'
+  app_name:
+    description: 'Nombre de la aplicación'
+    required: true
+    default: 'default'
+  branch_name:
+    description: 'Nombre de la rama de ejecución'
+    required: true
+    default: 'main'
+```
+
+
+- **user_name**: (Requerido) El nombre del usuario de Docker Hub.
+  
+- **app_version**: (Requerido) La versión de la aplicación que se está etiquetando.
+  
+- **app_name**: (Requerido) El nombre de la aplicación.
+  
+- **branch_name**: (Requerido) El nombre de la rama de ejecución que se está utilizando.
+
+### Salidas
+
+La acción proporciona una salida que contiene el nombre completo de la imagen:
+
+```yaml
+outputs:
+  image_name:
+    description: 'Nombre de la imagen completa'
+    value: ${{ steps.image_name_creator.outputs.image_name }}
+```
+
+### Salidas
+
+- **image_name**: Contiene el nombre de la imagen de Docker que se ha creado en base a las entradas.
+
+
+### Ejecución
+
+La acción se ejecuta utilizando un script en bash que realiza los siguientes pasos:
+
+```yaml
+runs:
+  using: "composite"
+  steps:
+    - id: image_name_creator
+      name: Extraer información sobre la versión del archivo JSON
+      run: |
+        if [[ ${{ inputs.branch_name }} = 'main' ]]; then
+          image_name="${{ inputs.user_name }}/${{ inputs.app_name }}:${{ inputs.app_version }}"
+        elif [[ ${{ inputs.branch_name }} = 'develop' ]]; then
+          image_name="${{ inputs.user_name }}/pre_${{ inputs.app_name }}:${{ inputs.app_version }}"
+        fi
+        
+        echo "Esta es la imagen desde el action: ${image_name}"
+        
+        echo "image_name=${image_name}" >> $GITHUB_OUTPUT
+      shell: bash
+```
+
+### Pasos del Script
+
+1. **Comprobación de la Rama**: Verifica si la rama de ejecución es `main` o `develop`.
+
+2. **Generación del Nombre de la Imagen**:
+   - Si la rama es `main`, el nombre de la imagen tendrá el formato: `user_name/app_name:app_version`.
+   - Si la rama es `develop`, el nombre tendrá el formato: `user_name/pre_app_name:app_version`.
+
+3. **Imprimir el Nombre de la Imagen**: Muestra el nombre generado en la consola para referencia.
+
+4. **Establecer la Salida**: Guarda el nombre generado en la variable de salida `image_name` para su uso en otros pasos de los workflows.
+
+
+### Notas Adicionales
+
+- **Formato de Nombres**: La diferenciación entre ramas permite tener imágenes etiquetadas correctamente, lo que es útil para implementar entornos de prueba (prefijados con `pre_`).
+
+- **Valores por Defecto**: Se proporcionan valores por defecto para las entradas, pero es recomendable especificar siempre los valores al utilizar la acción.
+
+- **Errores Potenciales**: Si se proporciona un nombre de rama no válido, el nombre de la imagen no se generará correctamente. Asegúrate de validar las entradas antes de llamar a esta acción.
+
+
+
 
