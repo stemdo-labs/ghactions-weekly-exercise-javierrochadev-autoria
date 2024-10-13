@@ -112,7 +112,8 @@ Este job llama al workflow de integración continua (CI) definido en `.github/wo
         image_name: ${{ needs.call_workflow_CI.outputs.image_name }}
         env_name: ${{ needs.set_environment.outputs.ENV_NAME }}
 ```
-[!WARNING] Notas Adicionales
+[!WARNING]
+Notas Adicionales
 
 - **Secrets**: Los secretos se heredan en cada job que utiliza otros workflows mediante el parámetro `secrets: inherit`.
 
