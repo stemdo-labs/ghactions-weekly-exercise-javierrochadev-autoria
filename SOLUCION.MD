@@ -173,8 +173,6 @@ on:
           echo "All tests have been passed."
 ```
 
-### Jobs
-
 2. **build**  
    Este job se ejecuta en un entorno de Ubuntu y siempre se activa, independientemente del resultado del job anterior. Se encarga de construir la imagen Docker de la aplicación Angular.
 
@@ -277,4 +275,71 @@ Copiar código
 - **Entradas y Salidas**: El workflow define entradas (`env_name`, `branch_name`) y salidas (`image_name`, `port_value_nginx`) que pueden ser utilizadas en workflows que invocan este flujo.
 
 - **Variables de Entorno**: Las variables como `DOCKERHUB_USER` y `DOCKERHUB_PASS` deben estar definidas en los secretos del repositorio para un acceso seguro.
+
+
+# GitHub Actions Workflow: **Despliegue de la Aplicación**
+
+Este workflow está diseñado para el despliegue de la aplicación. Se activa mediante una llamada de otro workflow y permite gestionar la versión de la aplicación de manera automatizada.
+
+## Disparadores
+
+El workflow se activa mediante el evento `workflow_call`, lo que permite su invocación desde otros workflows. Se definen las entradas necesarias:
+
+```yaml
+on:
+  workflow_call:
+    inputs:
+      env_name:
+        required: true
+        type: string
+      branch_name:
+        required: true
+        type: string
+        default: 'main'
+```
+
+### Jobs
+
+1. **update_version**  
+   Este job se encarga de actualizar la versión de la aplicación en el archivo `package.json` y se ejecuta en un entorno de Ubuntu.
+
+```yaml
+  update_version:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.env_name }}
+```
+
+### Pasos del Job Update Version
+
+1. **Checkout repo**: Realiza un checkout del repositorio para asegurarse de que se tiene acceso a los archivos necesarios, incluyendo `package.json`.
+
+```yaml
+- name: Checkout repo
+  uses: actions/checkout@v2
+```
+
+2. **Automated Version Bump**: Utiliza la acción `phips28/gh-action-bump-version` para incrementar automáticamente la versión de la aplicación según el tipo de versión especificado. Este paso requiere el `GITHUB_TOKEN` para autenticar la acción y realizar cambios en el repositorio.
+
+```yaml
+- name: 'Automated Version Bump'
+  uses: 'phips28/gh-action-bump-version@master'
+  env:
+    GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
+    PACKAGE_FILENAME: 'package.json'
+  with:
+    version-type: ${{ inputs.version_change }}
+    commit-message: 'CI: bumps version to {{version}} [ develop ]'
+    target-branch: ${{ inputs.branch_name }}
+```
+
+### Notas Adicionales
+
+- **Entradas**: Este workflow requiere las entradas `env_name` (nombre del entorno) y `branch_name` (nombre de la rama), lo que permite la personalización de la ejecución según las necesidades del despliegue.
+
+- **Automatización**: El uso de `gh-action-bump-version` permite un manejo automatizado del versionado, reduciendo la posibilidad de errores manuales.
+
+- **Secretos**: El `GITHUB_TOKEN` se debe almacenar como un secreto en el repositorio para mantener la seguridad durante la ejecución.
+
+
+
 
