@@ -112,8 +112,8 @@ Este job llama al workflow de integración continua (CI) definido en `.github/wo
         image_name: ${{ needs.call_workflow_CI.outputs.image_name }}
         env_name: ${{ needs.set_environment.outputs.ENV_NAME }}
 ```
-[!WARNING]
-Notas Adicionales
+
+## Notas Adicionales
 
 - **Secrets**: Los secretos se heredan en cada job que utiliza otros workflows mediante el parámetro `secrets: inherit`.
 
@@ -122,3 +122,159 @@ Notas Adicionales
 ```yaml
 if: ${{ needs.get_branch.outputs.BRANCH_NAME == 'develop' }}
 ```
+
+# Reusables
+
+# GitHub Actions Workflow: **Creación y Subida de la Imagen de Angular**
+
+Este workflow se encarga de la creación y subida de la imagen de una aplicación Angular a Docker Hub. Se activa mediante una llamada de otro workflow y permite definir variables de entrada y salida.
+
+## Disparadores
+
+El workflow se activa mediante el evento `workflow_call`, lo que significa que puede ser invocado desde otros workflows. Se definen entradas y salidas para la configuración:
+
+```yaml
+on:
+  workflow_call:
+    outputs:
+      image_name:
+        description: Nombre de la imagen
+        value: ${{ jobs.build.outputs.image_name }}
+      port_value_nginx:
+        description: Puerto donde recibe las solicitudes nginx
+        value: ${{ jobs.build.outputs.port_value_nginx }}
+    inputs:
+      env_name:
+        required: true
+        type: string
+      branch_name:
+        required: true
+        type: string
+```
+
+### Jobs
+
+1. **test**  
+   Este job se ejecuta en un entorno de Ubuntu y solo se activa si el `branch_name` es `main`. Se encarga de realizar pruebas funcionales del código.
+
+```yaml
+  test:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.env_name }}
+    if: ${{ inputs.branch_name == 'main' }}
+    steps:
+      - id: pass_testing
+        name: Testing de funcionamiento de código
+        run: |
+          echo "test_user_login_success"; sleep 2
+          echo "test_create_post"; sleep 2
+          echo "test_api_response"; sleep 2
+          echo "test_sql_injection"; sleep 2
+          echo "All tests have been passed."
+```
+
+### Jobs
+
+2. **build**  
+   Este job se ejecuta en un entorno de Ubuntu y siempre se activa, independientemente del resultado del job anterior. Se encarga de construir la imagen Docker de la aplicación Angular.
+
+```yaml
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ always() }}
+    needs: test
+    outputs:
+      image_name: ${{ steps.set_output.outputs.image_name }}
+    environment: ${{ inputs.env_name }}
+```
+
+### Pasos del Job Build
+
+- **Checkout code**: Realiza un checkout del código fuente del repositorio.
+
+```yaml
+- name: Checkout code
+  uses: actions/checkout@v2
+```
+
+- **Extractor de la versión de un fichero JSON**: Extrae la versión de un archivo JSON especificado.
+
+```yaml
+- name: Extractor de la versión de un fichero JSON
+  id: version_extractor
+  uses: ./.github/actions/extractor
+  with:
+    file_path: ${{ vars.PACKAGE_JSON_PATH }}
+    field_name: version
+```
+
+- **Extractor del nombre de un fichero JSON**: Extrae el nombre de un archivo JSON especificado.
+
+```yaml
+- name: Extractor del nombre de un fichero JSON
+  id: name_extractor
+  uses: ./.github/actions/extractor
+  with:
+    file_path: ${{ vars.PACKAGE_JSON_PATH }}
+    field_name: name
+```
+
+- **Llamar a la acción que crea el nombre de la imagen**: Genera el nombre de la imagen utilizando los valores extraídos y los nombres de rama.
+
+```yaml
+- name: Llamar a la action que me crea el nombre de la imagen
+  id: tagger
+  uses: ./.github/actions/tagger_action
+  with:
+    branch_name: ${{ inputs.branch_name }}
+    user_name: ${{ vars.DOCKERHUB_USER }}
+    app_name: ${{ steps.name_extractor.outputs.field_value }}
+    app_version: ${{ steps.version_extractor.outputs.field_value }}
+```
+
+- **Setear el valor del nombre de la imagen como output**: Establece el nombre de la imagen como un output del job.
+
+```yaml
+- id: set_output
+  name: Setear el valor del nombre de la imagen como output
+  run: |
+    echo "image_name=${{ steps.tagger.outputs.image_name }}" >> $GITHUB_OUTPUT
+```
+
+Hacer login en DockerHub: Se autentica en DockerHub utilizando las credenciales almacenadas en los secretos del repositorio.
+
+yaml
+Copiar código
+- name: Hacer login en DockerHub
+  uses: docker/login-action@v3
+  with:
+    username: ${{ vars.DOCKERHUB_USER }}
+    password: ${{ secrets.DOCKERHUB_PASS }}
+```
+
+- **Construir imagen**: Construye la imagen Docker de la aplicación Angular.
+
+```yaml
+- id: image_creation
+  name: Construir imagen
+  run: |
+    docker build -t ${{ steps
+```
+
+- **Subir imagen a Docker Hub**: Sube la imagen creada a Docker Hub.
+
+```yaml
+- id: image_push
+  name: Subir imagen a Docker Hub
+  run: |
+    docker push ${{ steps.tagger.outputs.image_name }}
+```
+
+### Notas Adicionales
+
+- **Manejo de Errores**: El job `build` se ejecuta siempre, independientemente del resultado del job de `test`.
+
+- **Entradas y Salidas**: El workflow define entradas (`env_name`, `branch_name`) y salidas (`image_name`, `port_value_nginx`) que pueden ser utilizadas en workflows que invocan este flujo.
+
+- **Variables de Entorno**: Las variables como `DOCKERHUB_USER` y `DOCKERHUB_PASS` deben estar definidas en los secretos del repositorio para un acceso seguro.
+
