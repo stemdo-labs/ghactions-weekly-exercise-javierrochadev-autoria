@@ -609,13 +609,13 @@ runs:
 
 ### UAT
 
-Este workdlow esta diseñado con ciertas variantes ya de tratarse del entorno de UAT, en este entorno es en donde tienen lugar los cambios en el desarrollo de la apliación, con lo cual es un entorno que podriamos denominar como  pre-producción, no se van a ejecutar test de código y no necesita de aprobadores de entorno para ninguno de sus jobs.
+Este workflow esta diseñado con ciertas variantes ya de tratarse del entorno de UAT, en este entorno es en donde tienen lugar los cambios en el desarrollo de la apliación, con lo cual es un entorno que podriamos denominar como  pre-producción, no se van a ejecutar test de código y no necesita de aprobadores de entorno para ninguno de sus jobs.
 En este entorno se va a producir las modificaciones de la versión de la app cuando la aplicación haya sido construida y subida a DockerHub sin errores.
 Esta aplicación va a ser subida a DockerHub con este formato <user_name>/pre_<app_name>:<tag_name or version_name>.
 
 ### Production
 
-Este workdlow esta diseñado con ciertas variantes ya de tratarse del entorno de Producción, en este entorno es en donde tienen lugar los test y los despliegues de la aplicación que ya esta funcionando en el entorno de UAT (pre-producción), para asi tener un entorno de producción real siempre y cuando el entorno de pre-producción este funionando desplegado de manera óptima.
+Este workflow esta diseñado con ciertas variantes ya de tratarse del entorno de Producción, en este entorno es en donde tienen lugar los test y los despliegues de la aplicación que ya esta funcionando en el entorno de UAT (pre-producción), para asi tener un entorno de producción real siempre y cuando el entorno de pre-producción este funionando desplegado de manera óptima.
 En este entorno se va a producir las modificaciones de la versión de manera que va a coger la versión que se tenga en los archivos JSON de la verión de UAT la cual este funcionando de manera óptima desplegada en la red.
 Este entrono va a necesitar de la aprobación de desarrolladores seniors en cada uno de los jobs que se vayan a ejecutar.
 Esta aplicación va a ser subida a DockerHub con este formato <user_name>/<app_name>:<tag_name or version_name>.
