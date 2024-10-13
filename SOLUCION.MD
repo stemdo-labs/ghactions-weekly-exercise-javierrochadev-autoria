@@ -277,7 +277,7 @@ Copiar código
 - **Variables de Entorno**: Las variables como `DOCKERHUB_USER` y `DOCKERHUB_PASS` deben estar definidas en los secretos del repositorio para un acceso seguro.
 
 
-# GitHub Actions Workflow: **Despliegue de la Aplicación**
+# GitHub Actions Workflow: **Modificación del versionado**
 
 Este workflow está diseñado para el despliegue de la aplicación. Se activa mediante una llamada de otro workflow y permite gestionar la versión de la aplicación de manera automatizada.
 
@@ -339,6 +339,88 @@ on:
 - **Automatización**: El uso de `gh-action-bump-version` permite un manejo automatizado del versionado, reduciendo la posibilidad de errores manuales.
 
 - **Secretos**: El `GITHUB_TOKEN` se debe almacenar como un secreto en el repositorio para mantener la seguridad durante la ejecución.
+
+
+# GitHub Actions Workflow: **Despliegue de la Aplicación**
+
+Este workflow se encarga del despliegue de una aplicación Docker en un entorno especificado. Se activa mediante una llamada de otro workflow y permite gestionar la implementación de la imagen Docker.
+
+## Disparadores
+
+El workflow se activa mediante el evento `workflow_call`, lo que permite su invocación desde otros workflows. Se definen las entradas necesarias:
+
+```yaml
+on:
+  workflow_call:
+    inputs:
+      image_name:
+        required: true
+        type: string
+      env_name:
+        required: true
+        type: string
+```
+
+### Jobs
+
+1. **deploy**  
+   Este job se encarga de desplegar la imagen de la aplicación en un entorno de Ubuntu.
+
+```yaml
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.env_name }}
+```
+
+### Pasos del Job Deploy
+
+1. **Mostrar entorno**: Imprime el nombre del entorno en el que se está realizando el despliegue. Esto ayuda a verificar que se está en el entorno correcto antes de proceder.
+
+```yaml
+- name: show env
+  run: |
+    echo "Este es el entorno ${{ inputs.env_name }}"
+´´´
+
+2. **Pull image**: Descarga la imagen Docker especificada utilizando el nombre de la imagen proporcionado como entrada.
+
+```yaml
+- name: Pull image
+  run: |
+    docker pull ${{ inputs.image_name }}
+```
+
+3. **Run container**: Inicia un contenedor en segundo plano a partir de la imagen descargada y asigna el puerto 8080 del contenedor al puerto 8080 de la máquina anfitriona.
+
+```yaml
+- name: Run container
+  run: |
+    docker run -d -p 8080:8080 --name github-weekly ${{ inputs.image_name }}
+``` 
+
+4. **Mostrar contenedores**: Muestra la lista de contenedores en ejecución para confirmar que el contenedor ha sido iniciado correctamente.
+
+```yaml
+- name: Show containers
+  run: |
+    docker ps
+```
+
+5. **Verificación del funcionamiento de la app**: Realiza una solicitud `curl` a la aplicación en el puerto 8080 para verificar que está funcionando correctamente.
+
+```yaml
+- name: Verificación del funcionamiento de la app
+  run: |
+    curl http://localhost:8080
+```
+
+### Notas Adicionales
+
+- **Entradas**: Este workflow requiere las entradas `image_name` (nombre de la imagen Docker) y `env_name` (nombre del entorno), lo que permite personalizar el proceso de despliegue según las necesidades específicas.
+
+- **Contenedor en Segundo Plano**: Al ejecutar el contenedor en segundo plano, se garantiza que el flujo de trabajo continúe ejecutándose sin esperar a que el contenedor termine.
+
+- **Verificación**: La verificación mediante `curl` es un paso importante para asegurar que la aplicación se haya desplegado correctamente y esté respondiendo a las solicitudes.
 
 
 
