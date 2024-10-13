@@ -188,7 +188,7 @@ on:
 
 ### Pasos del Job Build
 
-- **Checkout code**: Realiza un checkout del código fuente del repositorio.
+1. **Checkout code**: Realiza un checkout del código fuente del repositorio.
 
 ```yaml
 - name: Checkout code
@@ -206,7 +206,7 @@ on:
     field_name: version
 ```
 
-- **Extractor del nombre de un fichero JSON**: Extrae el nombre de un archivo JSON especificado.
+2. **Extractor del nombre de un fichero JSON**: Extrae el nombre de un archivo JSON especificado.
 
 ```yaml
 - name: Extractor del nombre de un fichero JSON
@@ -217,7 +217,7 @@ on:
     field_name: name
 ```
 
-- **Llamar a la acción que crea el nombre de la imagen**: Genera el nombre de la imagen utilizando los valores extraídos y los nombres de rama.
+3. **Llamar a la acción que crea el nombre de la imagen**: Genera el nombre de la imagen utilizando los valores extraídos y los nombres de rama.
 
 ```yaml
 - name: Llamar a la action que me crea el nombre de la imagen
@@ -230,7 +230,7 @@ on:
     app_version: ${{ steps.version_extractor.outputs.field_value }}
 ```
 
-- **Setear el valor del nombre de la imagen como output**: Establece el nombre de la imagen como un output del job.
+4. **Setear el valor del nombre de la imagen como output**: Establece el nombre de la imagen como un output del job.
 
 ```yaml
 - id: set_output
@@ -239,10 +239,9 @@ on:
     echo "image_name=${{ steps.tagger.outputs.image_name }}" >> $GITHUB_OUTPUT
 ```
 
-Hacer login en DockerHub: Se autentica en DockerHub utilizando las credenciales almacenadas en los secretos del repositorio.
+5. **Hacer login en DockerHub**: Se autentica en DockerHub utilizando las credenciales almacenadas en los secretos del repositorio.
 
-yaml
-Copiar código
+```yaml
 - name: Hacer login en DockerHub
   uses: docker/login-action@v3
   with:
@@ -250,7 +249,7 @@ Copiar código
     password: ${{ secrets.DOCKERHUB_PASS }}
 ```
 
-- **Construir imagen**: Construye la imagen Docker de la aplicación Angular.
+6. **Construir imagen**: Construye la imagen Docker de la aplicación Angular.
 
 ```yaml
 - id: image_creation
@@ -259,7 +258,7 @@ Copiar código
     docker build -t ${{ steps
 ```
 
-- **Subir imagen a Docker Hub**: Sube la imagen creada a Docker Hub.
+7. **Subir imagen a Docker Hub**: Sube la imagen creada a Docker Hub.
 
 ```yaml
 - id: image_push
@@ -422,6 +421,83 @@ on:
 
 - **Verificación**: La verificación mediante `curl` es un paso importante para asegurar que la aplicación se haya desplegado correctamente y esté respondiendo a las solicitudes.
 
+
+## Custom actions
+
+# GitHub Action: **Extractor Action**
+
+Esta acción compuesta se encarga de extraer el valor de un campo específico de un archivo JSON. Es útil para recuperar datos configurables desde archivos de configuración en formato JSON.
+
+## Descripción
+
+- **Descripción**: Esta acción busca un campo en un archivo JSON y devuelve su valor.
+- **Tipo**: Acción compuesta
+
+## Entradas
+
+La acción recibe las siguientes entradas:
+
+```yaml
+inputs:
+  field_name:
+    description: 'Campo a buscar'
+    required: true
+    default: 'default'
+  file_path:
+    description: 'Ubicación del fichero json'
+    required: true
+    default: 'default'
+```
+
+### Entradas
+
+- **field_name**: (Requerido) El nombre del campo que se desea buscar en el archivo JSON.
+- **file_path**: (Requerido) La ruta al archivo JSON desde el que se desea extraer el valor.
+
+### Salidas
+
+La acción proporciona una salida que contiene el valor del campo extraído:
+
+```yaml
+outputs:
+  field_value:
+    description: 'Valor del campo a buscar en el fichero'
+    value: ${{ steps.extractor.outputs.field_value }}
+```
+
+Ejecución
+La acción se ejecuta utilizando un script en bash que realiza los siguientes pasos:
+
+```yaml
+runs:
+  using: "composite"
+  steps:
+    - id: extractor
+      name: version_extractor
+      run: |
+        field_value=$(grep -o '"${{ inputs.field_name }}": *"[^"]*"' ${{ inputs.file_path }} | sed 's/"${{ inputs.field_name }}": "//;s/"//g')
+        echo "field_value=${field_value}" >> $GITHUB_OUTPUT
+        echo "Este es el nombre de la app $field_value"
+      shell: bash
+```
+
+### Pasos del Script
+
+1. **Buscar el Campo**: Utiliza `grep` para buscar el campo especificado en el archivo JSON.
+
+2. **Extraer el Valor**: Utiliza `sed` para limpiar la salida y obtener solo el valor del campo.
+
+3. **Establecer la Salida**: Guarda el valor extraído en la variable de salida `field_value`, que se puede utilizar en otros pasos de los workflows.
+
+4. **Imprimir el Valor**: Muestra el valor extraído en la consola para referencia.
+
+### Notas Adicionales
+
+- **Uso de grep y sed**: Esta acción depende de herramientas de línea de comandos como `grep` y `sed`, que son comunes en entornos basados en Unix.
+
+- **Valores por Defecto**: Aunque se proporcionan valores por defecto para las entradas, es recomendable especificar siempre los valores al utilizar la acción.
+
+- **Errores en el Archivo**: Si el archivo JSON no existe o el campo no se encuentra, el comportamiento de la acción dependerá de la configuración del entorno y la gestión de errores en el script.
 
 
 
