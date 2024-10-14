@@ -6,7 +6,6 @@
 
 ## Descripción
 
-
 El objetivo de este ejercicio es realizar una modificación en tu workflow de **GitHub Actions** para que maneje las etiquetas de las imágenes Docker según la rama en la que se hayan realizado los cambios:
 
 - Si los cambios se han realizado en la **rama `main`**, la etiqueta de la imagen Docker no cambiará. (El valor de la etiqueta sigue estando formado por los campos del nombre y la versión que figuran en el fichero package.json)
