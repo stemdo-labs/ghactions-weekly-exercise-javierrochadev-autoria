@@ -30,7 +30,8 @@ runs:
         if [[ ${{ inputs.branch_name }} = 'main' ]]; then
           image_name="${{ inputs.user_name }}/${{ inputs.app_name }}:${{ inputs.app_version }}"
         elif [[ ${{ inputs.branch_name }} = 'develop' ]]; then
-          image_name="${{ inputs.user_name }}/pre_${{ inputs.app_name }}:${{ inputs.app_version }}"
+          # image_name="${{ inputs.user_name }}/pre_${{ inputs.app_name }}:${{ inputs.app_version }}"
+            image_name="${{ inputs.user_name }}/${{ inputs.app_name }}:${{ inputs.app_version }}-snapshot"
         fi
         
         echo "Esta es la imagen desde el action: ${image_name}"
